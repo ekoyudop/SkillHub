@@ -31,13 +31,9 @@
             margin-right: 20px;
         }
 
-        #logout:hover {
-            background-color: #1585c5;
-            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-        }
-
         /* Navbar End */
 
+        /* Content Start  */
         #image-container {
             text-align: center;
             margin-top: 20px;
@@ -48,35 +44,35 @@
             width: 80%;
         }
 
-        #faq-container {
-            text-align: center;
-            margin-top: 30px;
-        }
-
-        #kategori {
-            padding: 20px;
-        }
-
-        .custom-text-color {
-            color: black;
-        }
-
         #card {
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 1px 10px rgba(0, 0, 0, 0.1);
-            margin-left: 25px;
-            margin-right: 10px;
-            margin-top: 10px;
-        }
-
-        #tambah {
             margin-left: 15px;
+            margin-right: 10px;
         }
 
         #button {
             margin-left: 5px;
         }
+
+        #lihat {
+            border-radius: 20px;
+        }
+
+        /* Content End  */
+
+        /* FAQ Start */
+        #faq {
+            background-color: #6fa8fd18;
+        }
+
+        #faq-container {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        /* FAQ End */
 
         /* Footer Start */
         body {
@@ -116,10 +112,10 @@
                 </a>
                 <ul class="navbar-nav col-lg-6 justify-content-lg-center">
                     <li class="nav-item">
-                        <a class="nav-link" href="home_pemilik.html">Home</a>
+                        <a class="nav-link active" href="home_pemilik.html">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="discover_pemilik.html">Discover</a>
+                        <a class="nav-link" href="discover_pemilik.html">Discover</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="mycourse_pemilik.html">My Course</a>
@@ -136,17 +132,17 @@
     </nav>
     <!-- Navbar End -->
 
+    <!-- Content Start -->
+    <div id="image-container">
+        <img src="bg-navbar.jpg" alt="Your Image" class="img-fluid ">
+    </div>
+
     <div class="container">
         <div class="row">
             <div class="col" id="kategori">
                 <div class="d-flex flex-row mb-3">
-                    <div class="p-2">
-                        <a href="discover_pemilik.html" class="text-decoration-none custom-text-color">
-                            <h3>Daftar Kategori</h3>
-                        </a>
-                    </div>
+                    <h3>Kategori Course</h3>
                 </div>
-                <button type="button" class="btn btn-primary" id="tambah">Tambah +</button>
                 <div class="row row-cols-lg-5 row-cols-2 row-cols-md-3">
                     <div class="col" id="card">
                         <div class="text-center position-relative">
@@ -171,7 +167,51 @@
                 </div>
             </div>
         </div>
+        <br>
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <div class="text-center">
+                        <div>
+                            <a href="discover_pemilik.html" class="btn btn-primary" id="lihat">Lihat Selengkapnya</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
     </div>
+    <!-- Content End -->
+
+    <!-- FAQ Start -->
+    <div id="faq">
+        <div class="container" id="faq-container">
+            <br>
+            <h3>Informasi Tambahan</h3>
+            <br>
+            <div class="faq-item">
+                <h5>Apa itu SkillHub?</h5>
+                <p>SkillHub adalah platform pembelajaran online di mana Anda dapat menemukan dan mengambil berbagai
+                    kursus untuk meningkatkan
+                    keterampilan Anda.</p>
+            </div>
+
+            <div class="faq-item">
+                <h5>Bagaimana cara mendaftar dalam sebuah kursus?</h5>
+                <p>Untuk mendaftar dalam sebuah kursus, cukup navigasi ke halaman "Course" dan klik tombol "Beli
+                    Sekarang".</p>
+            </div>
+
+            <div class="faq-item">
+                <h5>Apakah saya dapat mengakses kursus saya di beberapa perangkat?</h5>
+                <p>Iya, Anda dapat mengakses kursus Anda di beberapa perangkat dengan login menggunakan kredensial akun
+                    Anda.</p>
+            </div>
+            <br>
+        </div>
+    </div>
+    <!-- FAQ End -->
+    <br>
 </body>
 
 <!-- Footer Start-->
