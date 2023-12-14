@@ -34,22 +34,13 @@ def discover():
 def register():
     return render_template('register.html')
 
-@app.route("/login")
+@app.route('/login')
 def login():
-    msg = request.args.get("msg")
-    return render_template("login.html", msg=msg)
+    return render_template('login.html')
 
 @app.route('/home_visitor')
-def login():
-    token_receive = request.cookies.get("mytoken")
-    try:
-        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
-        user_info = db.users.find_one({"username": payload["id"]})
-        return render_template("home_visitor.html", user_info=user_info)
-    except jwt.ExpiredSignatureError:
-        return redirect(url_for("login", msg="Your token has expired"))
-    except jwt.exceptions.DecodeError:
-        return redirect(url_for("login", msg="There was problem logging you in"))
+def home_visitor():
+    return render_template('home_visitor.html')
 
 if __name__ == "__main__":
     app.run("0.0.0.0", port=5000, debug=True)

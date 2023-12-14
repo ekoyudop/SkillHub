@@ -33,6 +33,7 @@
             margin-top: 30px;
         }
     </style>
+    <script></script>
 </head>
 
 <body>
@@ -91,26 +92,24 @@
             <div class="col-xl-5 col-lg-6 col-md-8 col-12">
                 <div class="card shadow-sm mb-3">
                     <div class="card-body">
-                        <form class="needs-validation mb-6" novalidate="">
-                            <div class="mb-3">
-                                <label for="nickname" class="form-label">Nickname</label>
-                                <input type="text" class="form-control" id="nickname" required="">
-                            </div>
+                        <div class="mb-3">
+                            <label for="nickname" class="form-label">Nickname</label>
+                            <input type="text" class="form-control" id="nickname" required="">
+                        </div>
 
-                            <div class="mb-3">
-                                <label for="username" class="form-label">Username</label>
-                                <input type="username" class="form-control" id="username" required="">
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Username</label>
+                            <input type="username" class="form-control" id="username" required="">
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Password</label>
+                            <div class="password-field position-relative">
+                                <input type="password" class="form-control" id="password" required="">
                             </div>
-                            <div class="mb-3">
-                                <label for="password" class="form-label">Password</label>
-                                <div class="password-field position-relative">
-                                    <input type="password" class="form-control" id="password" required="">
-                                </div>
-                            </div>
-                            <div class="d-grid">
-                                <button class="btn btn-primary" type="submit" onclick="register()">Sign Up</button>
-                            </div>
-                        </form>
+                        </div>
+                        <div class="d-grid">
+                            <button class="btn btn-primary" type="submit" onclick="register()">Sign Up</button>
+                        </div>
                     </div>
                 </div>
 
