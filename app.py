@@ -30,9 +30,31 @@ def index():
 def discover():
     return render_template('discover.html')
 
-@app.route('/register')
+@app.route("/register", methods=["GET"])
 def register():
-    return render_template('register.html')
+    return render_template("register.html")
+
+@app.route("/api/register", methods=["POST"])
+def api_register():
+    id_receive = request.form["id_give"]
+
+    existing_user = db.user.find_one({"id": id_receive})
+    if existing_user:
+        msg = f"An account with id {id_receive} already exists. Please login!"
+        return jsonify({"result": "failure", "msg": msg})
+
+    pw_receive = request.form["pw_give"]
+    nickname_receive = request.form["nickname_give"]
+
+    pw_hash = hashlib.sha256(pw_receive.encode("utf-8")).hexdigest()
+
+    db.user.insert_one({
+        "id": id_receive, 
+        "pw": pw_hash, 
+        "nick": nickname_receive
+    })
+
+    return jsonify({"result": "success"})
 
 @app.route('/login')
 def login():
