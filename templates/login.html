@@ -93,23 +93,17 @@
                         <div class="card-body">
                             <form class="needs-validation mb-6" novalidate="">
                                 <div class="mb-3">
-                                    <label for="signinEmailInput" class="form-label">
-                                        Email
-                                    </label>
-                                    <input type="email" class="form-control" id="signinEmailInput" required="">
-                                    <div class="invalid-feedback">Please enter email.</div>
+                                    <label for="username" class="form-label">Username</label>
+                                    <input type="username" class="form-control" id="username" required="">
                                 </div>
                                 <div class="mb-3">
-                                    <label for="formSignUpPassword" class="form-label">Password</label>
+                                    <label for="password" class="form-label">Password</label>
                                     <div class="password-field position-relative">
-                                        <input type="password" class="form-control fakePassword" id="formSignUpPassword"
-                                            required="">
-                                        <span><i class="bi bi-eye-slash passwordToggler"></i></span>
-                                        <div class="invalid-feedback">Please enter password.</div>
+                                        <input type="password" class="form-control" id="password" required="">
                                     </div>
                                 </div>
                                 <div class="d-grid">
-                                    <button class="btn btn-primary" type="submit">Sign In</button>
+                                    <button class="btn btn-primary" type="submit" onclick="login()">Login</button>
                                 </div>
                             </form>
                         </div>
