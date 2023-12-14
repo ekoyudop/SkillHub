@@ -44,6 +44,7 @@
                     id_give: $("#userid").val(),
                     pw_give: $("#userpw").val(),
                     nickname_give: $("#usernick").val(),
+                    role: "user"
                 },
                 success: function (response) {
                     if (response["result"] === "success") {
