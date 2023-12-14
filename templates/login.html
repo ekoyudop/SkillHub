@@ -46,7 +46,7 @@
                         $.cookie('mytoken', response['token']);
 
                         alert('Login complete!')
-                        window.location.href = '/home_visitor'
+                        window.location.href = response['redirect'];  // Redirect based on the 'redirect' field
                     } else {
                         alert(response['msg'])
                     }

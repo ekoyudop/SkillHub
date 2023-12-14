@@ -80,16 +80,20 @@ def api_login():
             "id": id_receive,
             "exp": datetime.datetime.utcnow() + datetime.timedelta(seconds=60 * 60 * 24),
         }
-        token = jwt.encode(
-            payload, 
-            SECRET_KEY, 
-            algorithm="HS256"
-        )
 
-        return jsonify({
-            "result": "success", 
-            "token": token
-        })
+        # Check if the user is admin and redirect accordingly
+        if id_receive == "admin":
+            return jsonify({
+                "result": "success", 
+                "token": jwt.encode(payload, SECRET_KEY, algorithm="HS256"),
+                "redirect": "/home_pemilik"
+            })
+        else:
+            return jsonify({
+                "result": "success", 
+                "token": jwt.encode(payload, SECRET_KEY, algorithm="HS256"),
+                "redirect": "/home_visitor"
+            })
     else:
         return jsonify({
             "result": "fail", 
@@ -115,5 +119,25 @@ def home_visitor():
             "login", 
             msg="There was an issue logging you in"))
             
+@app.route('/home_pemilik')
+def home_pemilik():
+    token_receive = request.cookies.get("mytoken")
+    try:
+        payload = jwt.decode(
+            token_receive, 
+            SECRET_KEY, 
+            algorithms=["HS256"])
+
+        # Check if the user is admin, if not, redirect to home_visitor
+        if payload["id"] != "admin":
+            return redirect(url_for("home_visitor"))
+
+        return render_template("home_pemilik.html")
+    except jwt.ExpiredSignatureError:
+        return redirect(url_for("login", msg="Your login token has expired"))
+    except jwt.exceptions.DecodeError:
+        return redirect(url_for("login", msg="There was an issue logging you in"))
+
+
 if __name__ == "__main__":
     app.run("0.0.0.0", port=5000, debug=True)
