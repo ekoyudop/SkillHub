@@ -24,7 +24,22 @@ SECRET_KEY = "SKILLHUB"
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    token_receive = request.cookies.get("mytoken")
+    try:
+        payload = jwt.decode(
+            token_receive, 
+            SECRET_KEY, 
+            algorithms=["HS256"])
+        
+        if payload["role"] == "admin":
+            return redirect(url_for("home_pemilik"))
+        
+        return redirect(url_for("home_visitor"))
+    
+    except jwt.ExpiredSignatureError:
+        return render_template("index.html")
+    except jwt.exceptions.DecodeError:
+        return render_template("index.html")
 
 @app.route('/discover')
 def discover():
@@ -112,7 +127,7 @@ def home_visitor():
             SECRET_KEY, 
             algorithms=["HS256"])
         
-        if payload["role"] == "admin":
+        if payload["role"] != "user":
             return redirect(url_for("home_pemilik"))
         
         return render_template("home_visitor.html")
