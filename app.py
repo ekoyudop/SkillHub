@@ -138,6 +138,45 @@ def home_pemilik():
     except jwt.exceptions.DecodeError:
         return redirect(url_for("login", msg="There was an issue logging you in"))
 
+@app.route('/cekpembayaran_visitor')
+def cekpembayaran_visitor():
+    return render_template('cekpembayaran_visitor.html')
+
+@app.route('/cekpembayaran_pemilik')
+def cekpembayaran_pemilik():
+    return render_template('cekpembayaran_pemilik.html')
+
+@app.route('/detailcourse_visitor')
+def detailcourse_visitor():
+    return render_template('detailcourse_visitor.html')
+
+@app.route('/detailcourse_pemilik')
+def detailcourse_pemilik():
+    return render_template('detailcourse_pemilik.html')
+
+@app.route('/discover_visitor')
+def discover_visitor():
+    return render_template('discover_visitor.html')
+
+@app.route('/discover_pemilik')
+def discover_pemilik():
+    return render_template('discover_pemilik.html')
+
+@app.route('/listcourse_visitor')
+def listcourse_visitor():
+    return render_template('listcourse_visitor.html')
+
+@app.route('/listcourse_pemilik')
+def listcourse_pemilik():
+    return render_template('listcourse_pemilik.html')
+
+@app.route('/mycourse_visitor')
+def mycourse_visitor():
+    return render_template('mycourse_visitor.html')
+
+@app.route('/mycourse_pemilik')
+def mycourse_pemilik():
+    return render_template('mycourse_pemilik.html')
 
 if __name__ == "__main__":
     app.run("0.0.0.0", port=5000, debug=True)
