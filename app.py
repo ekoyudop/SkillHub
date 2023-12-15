@@ -108,6 +108,11 @@ def home_visitor():
             token_receive, 
             SECRET_KEY, 
             algorithms=["HS256"])
+        
+        # Check if the user is admin, if not, redirect to home_visitor
+        if payload["id"] == "admin":
+            return redirect(url_for("home_pemilik"))
+        
         return render_template("home_visitor.html")
     except jwt.ExpiredSignatureError:
         return redirect(url_for(
