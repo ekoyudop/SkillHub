@@ -73,16 +73,19 @@ def api_login():
     result = db.user.find_one({
         "id": id_receive, 
         "pw": pw_hash
-    })
+    }, {"role": 1, "_id": 0})
+
 
     if result is not None:
+        user_role = result.get("role", None)
+
         payload = {
             "id": id_receive,
+            "role": user_role,
             "exp": datetime.datetime.utcnow() + datetime.timedelta(seconds=60 * 60 * 24),
         }
 
-        # Check if the user is admin and redirect accordingly
-        if id_receive == "admin":
+        if user_role == "admin":
             return jsonify({
                 "result": "success", 
                 "token": jwt.encode(payload, SECRET_KEY, algorithm="HS256"),
@@ -109,8 +112,7 @@ def home_visitor():
             SECRET_KEY, 
             algorithms=["HS256"])
         
-        # Check if the user is admin, if not, redirect to home_visitor
-        if payload["id"] == "admin":
+        if payload["role"] == "admin":
             return redirect(url_for("home_pemilik"))
         
         return render_template("home_visitor.html")
@@ -133,8 +135,7 @@ def home_pemilik():
             SECRET_KEY, 
             algorithms=["HS256"])
 
-        # Check if the user is admin, if not, redirect to home_visitor
-        if payload["id"] != "admin":
+        if payload["role"] != "admin":
             return redirect(url_for("home_visitor"))
 
         return render_template("home_pemilik.html")
