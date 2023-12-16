@@ -69,6 +69,7 @@
             box-shadow: 0 1px 10px rgba(0, 0, 0, 0.1);
             margin-top: 10px;
             margin-left: 25px;
+            margin-right: 10px;
         }
 
         .container {
@@ -128,50 +129,90 @@
                 </a>
                 <ul class="navbar-nav col-lg-6 justify-content-lg-center">
                     <li class="nav-item">
-                        <a class="nav-link" href="/home_pemilik">Home</a>
+                        <a class="nav-link" href="/">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/discover_pemilik">Discover</a>
+                        <a class="nav-link" href="/discover">Discover</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="/mycourse_pemilik">My Course</a>
+                        <a class="nav-link" href="/mycourse">My Course</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/cekpembayaran_pemilik">Cek Pembayaran</a>
+                        <a class="nav-link active" href="/cekpembayaran">Cek Pembayaran</a>
                     </li>
                 </ul>
+                {% if not logged_in %}
+                <div class="d-lg-flex col-lg-3 justify-content-lg-end">
+                    <a href="/register" class="btn btn-primary" id="register">Register</a>
+                    <a href="/login" class="btn btn-primary" id="login">Login</a>
+                </div>
+                {% endif %}
+                {% if logged_in %}
                 <div class="d-lg-flex col-lg-3 justify-content-lg-end">
                     <button class="btn btn-primary" id="logout" onclick="logout()">Logout</button>
                 </div>
+                {% endif %}
             </div>
         </div>
     </nav>
     <!-- Navbar End -->
 
     <div class="container">
-        <div class="row">
-            <div class="col-lg-3" id="card">
+        <div class="col">
+            {% if is_admin %}
+            <div class="row" id="card">
                 <div class="d-flex">
-                    <h5>HTML Course</h5>
+                    <h5>HTML Course <span class="badge rounded-pill text-bg-warning" id="badge">Pending</span></h5>
                 </div>
-                <p>Progress 1/10</p>
+                <p>08 Desember 2023</p>
+                <img src="/static/bg-navbar.jpg" alt="Bukti Pembayaran" id="bukti-pembayaran"
+                    class="rounded mx-auto d-block">
+                <p id="pembayaran">Total Pembayaran : Rp. 100.000</p>
                 <div class="d-flex justify-content-end">
-                    <button type="button" class="btn btn-primary" id="submit">Edit</button>
-                    <button type="button" class="btn btn-primary" id="submit">Delete</button>
-                    <button type="button" class="btn btn-primary" id="submit">View</button>
+                    <button type="button" class="btn btn-primary" id="submit">Acept</button>
+                    <button type="button" class="btn btn-primary" id="submit">Deny</button>
                 </div>
             </div>
-            <div class="col-lg-3" id="card">
+            <div class="row" id="card">
                 <div class="d-flex">
-                    <h5>CSS Course</h5>
+                    <h5>CSS Course <span class="badge rounded-pill text-bg-warning" id="badge">Pending</span></h5>
                 </div>
-                <p>Progress 1/10</p>
+                <p>08 Desember 2023</p>
+                <p id="pembayaran">Total Pembayaran : Rp. 100.000</p>
+                <img src="/static/bg-navbar.jpg" alt="Bukti Pembayaran" id="bukti-pembayaran"
+                    class="rounded mx-auto d-block">
                 <div class="d-flex justify-content-end">
-                    <button type="button" class="btn btn-primary" id="submit">Edit</button>
-                    <button type="button" class="btn btn-primary" id="submit">Delete</button>
-                    <button type="button" class="btn btn-primary" id="submit">View</button>
+                    <button type="button" class="btn btn-primary" id="submit">Acept</button>
+                    <button type="button" class="btn btn-primary" id="submit">Deny</button>
                 </div>
             </div>
+            {% endif %}
+            {% if not is_admin %}
+            <div class="row" id="card">
+                <div class="d-flex">
+                    <h5>HTML Course <span class="badge rounded-pill text-bg-warning" id="badge">Pending</span></h5>
+                </div>
+                <p>08 Desember 2023</p>
+                <p id="pembayaran">Total Pembayaran : Rp. 100.000</p>
+                <div class="d-flex justify-content-end">
+                    <label for="formFile" class="form-label"></label>
+                    <input class="form-control" type="file" id="formFile">
+                    <button type="button" class="btn btn-primary" id="submit">Submit</button>
+                </div>
+            </div>
+            <div class="row" id="card">
+                <div class="d-flex">
+                    <h5>CSS Course <span class="badge rounded-pill text-bg-warning" id="badge">Pending</span></h5>
+                </div>
+                <p>08 Desember 2023</p>
+                <p id="pembayaran">Total Pembayaran : Rp. 100.000</p>
+                <div class="d-flex justify-content-end">
+                    <label for="formFile" class="form-label"></label>
+                    <input class="form-control" type="file" id="formFile">
+                    <button type="button" class="btn btn-primary" id="submit">Submit</button>
+                </div>
+            </div>
+            {% endif %}
         </div>
     </div>
 </body>

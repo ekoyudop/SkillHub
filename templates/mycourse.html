@@ -67,17 +67,20 @@
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 1px 10px rgba(0, 0, 0, 0.1);
-            margin-left: 25px;
-            margin-right: 10px;
             margin-top: 10px;
+            margin-left: 25px;
         }
 
-        #tambah {
-            margin-left: 15px;
+        .container {
+            margin-top: 25px;
         }
 
-        #button {
-            margin-left: 5px;
+        #pembayaran {
+            margin-top: 20px;
+        }
+
+        #submit {
+            margin-left: 10px;
         }
 
         /* Footer Start */
@@ -125,21 +128,29 @@
                 </a>
                 <ul class="navbar-nav col-lg-6 justify-content-lg-center">
                     <li class="nav-item">
-                        <a class="nav-link" href="/home_pemilik">Home</a>
+                        <a class="nav-link" href="/">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="/discover_pemilik">Discover</a>
+                        <a class="nav-link" href="/discover">Discover</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/mycourse_pemilik">My Course</a>
+                        <a class="nav-link active" href="/mycourse">My Course</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/cekpembayaran_pemilik">Cek Pembayaran</a>
+                        <a class="nav-link" href="/cekpembayaran">Cek Pembayaran</a>
                     </li>
                 </ul>
+                {% if not logged_in %}
+                <div class="d-lg-flex col-lg-3 justify-content-lg-end">
+                    <a href="/register" class="btn btn-primary" id="register">Register</a>
+                    <a href="/login" class="btn btn-primary" id="login">Login</a>
+                </div>
+                {% endif %}
+                {% if logged_in %}
                 <div class="d-lg-flex col-lg-3 justify-content-lg-end">
                     <button class="btn btn-primary" id="logout" onclick="logout()">Logout</button>
                 </div>
+                {% endif %}
             </div>
         </div>
     </nav>
@@ -147,36 +158,30 @@
 
     <div class="container">
         <div class="row">
-            <div class="col" id="kategori">
-                <div class="d-flex flex-row mb-3">
-                    <div class="p-2">
-                        <a href="/discover_pemilik" class="text-decoration-none custom-text-color">
-                            <h3>Daftar Kategori</h3>
-                        </a>
-                    </div>
+            <div class="col-lg-3" id="card">
+                <div class="d-flex">
+                    <h5>HTML Course</h5>
                 </div>
-                <button type="button" class="btn btn-primary" id="tambah">Tambah +</button>
-                <div class="row row-cols-lg-5 row-cols-2 row-cols-md-3">
-                    <div class="col" id="card">
-                        <div class="text-center position-relative">
-                            <a href="#!"><img src="/static/bg-navbar.jpg" alt="Grocery Ecommerce Template"
-                                    class="mb-3 img-fluid"></a>
-                        </div>
-                        <h5>Web Development</h5>
-                        <div class="d-flex justify-content-lg-end">
-                            <button type="button" class="btn btn-primary" id="button">Detail</button>
-                        </div>
-                    </div>
-                    <div class="col" id="card">
-                        <div class="text-center position-relative">
-                            <a href="#!"><img src="/static/bg-navbar.jpg" alt="Grocery Ecommerce Template"
-                                    class="mb-3 img-fluid"></a>
-                        </div>
-                        <h5>Mobile Development</h5>
-                        <div class="d-flex justify-content-lg-end">
-                            <button type="button" class="btn btn-primary" id="button">Detail</button>
-                        </div>
-                    </div>
+                <p>Progress 1/10</p>
+                <div class="d-flex justify-content-end">
+                    {% if is_admin %}
+                    <button type="button" class="btn btn-primary" id="submit">Edit</button>
+                    <button type="button" class="btn btn-primary" id="submit">Delete</button>
+                    {% endif %}
+                    <button type="button" class="btn btn-primary" id="submit">View</button>
+                </div>
+            </div>
+            <div class="col-lg-3" id="card">
+                <div class="d-flex">
+                    <h5>CSS Course</h5>
+                </div>
+                <p>Progress 1/10</p>
+                <div class="d-flex justify-content-end">
+                    {% if is_admin %}
+                    <button type="button" class="btn btn-primary" id="submit">Edit</button>
+                    <button type="button" class="btn btn-primary" id="submit">Delete</button>
+                    {% endif %}
+                    <button type="button" class="btn btn-primary" id="submit">View</button>
                 </div>
             </div>
         </div>

@@ -46,7 +46,7 @@
                         $.cookie('mytoken', response['token']);
 
                         alert('Login complete!')
-                        window.location.href = response['redirect'];  // Redirect based on the 'redirect' field
+                        window.location.href = '/'
                     } else {
                         alert(response['msg'])
                     }
@@ -77,12 +77,6 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/discover">Discover</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/mycourse">My Course</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/cekpembayaran">Cek Pembayaran</a>
                     </li>
                 </ul>
                 <div class="d-lg-flex col-lg-3 justify-content-lg-end">
