@@ -43,11 +43,80 @@ def index():
 
 @app.route('/discover')
 def discover():
-    return render_template('discover.html')
+    token_receive = request.cookies.get("mytoken")
+    try:
+        payload = jwt.decode(
+            token_receive, 
+            SECRET_KEY, 
+            algorithms=["HS256"])
+        
+        if payload["role"] == "admin":
+            return redirect(url_for("discover_pemilik"))
+        
+        return redirect(url_for("discover_visitor"))
+    
+    except jwt.ExpiredSignatureError:
+        return render_template('discover.html')
+    except jwt.exceptions.DecodeError:
+        return render_template('discover.html')
+    
+@app.route("/mycourse", methods=["GET"])
+def mycourse():
+    token_receive = request.cookies.get("mytoken")
+    try:
+        payload = jwt.decode(
+            token_receive, 
+            SECRET_KEY, 
+            algorithms=["HS256"])
+        
+        if payload["role"] == "admin":
+            return redirect(url_for("mycourse_pemilik"))
+        
+        return redirect(url_for("mycourse_visitor"))
+    
+    except jwt.ExpiredSignatureError:
+        return redirect(url_for("login"))
+    except jwt.exceptions.DecodeError:
+        return redirect(url_for("login"))
+    
+@app.route("/cekpembayaran", methods=["GET"])
+def cekpembayaran():
+    token_receive = request.cookies.get("mytoken")
+    try:
+        payload = jwt.decode(
+            token_receive, 
+            SECRET_KEY, 
+            algorithms=["HS256"])
+        
+        if payload["role"] == "admin":
+            return redirect(url_for("cekpembayaran_pemilik"))
+        
+        return redirect(url_for("cekpembayaran_visitor"))
+    
+    except jwt.ExpiredSignatureError:
+        return redirect(url_for("login"))
+    except jwt.exceptions.DecodeError:
+        return redirect(url_for("login"))
 
 @app.route("/register", methods=["GET"])
 def register():
-    return render_template("register.html")
+    token_receive = request.cookies.get("mytoken")
+    try:
+        payload = jwt.decode(
+            token_receive, 
+            SECRET_KEY, 
+            algorithms=["HS256"])
+        
+        if payload["role"] == "admin":
+            return redirect(url_for("home_pemilik"))
+        
+        return redirect(url_for("home_visitor"))
+    
+    except jwt.ExpiredSignatureError:
+        return render_template("register.html")
+    except jwt.exceptions.DecodeError:
+        return render_template("register.html")
+    
 
 @app.route("/api/register", methods=["POST"])
 def api_register():
@@ -76,7 +145,23 @@ def api_register():
 
 @app.route('/login')
 def login():
-    return render_template('login.html')
+    token_receive = request.cookies.get("mytoken")
+    try:
+        payload = jwt.decode(
+            token_receive, 
+            SECRET_KEY, 
+            algorithms=["HS256"])
+        
+        if payload["role"] == "admin":
+            return redirect(url_for("home_pemilik"))
+        
+        return redirect(url_for("home_visitor"))
+    
+    except jwt.ExpiredSignatureError:
+        return render_template('login.html')
+    except jwt.exceptions.DecodeError:
+        return render_template('login.html')
+    
 
 @app.route("/api/login", methods=["POST"])
 def api_login():
@@ -88,7 +173,7 @@ def api_login():
     result = db.user.find_one({
         "id": id_receive, 
         "pw": pw_hash
-    }, {"role": 1, "_id": 0})
+    }, {"role": 1})
 
 
     if result is not None:
@@ -132,15 +217,102 @@ def home_visitor():
         
         return render_template("home_visitor.html")
     except jwt.ExpiredSignatureError:
-        return redirect(url_for(
-            "login", 
-            msg="Your login token has expired"
-            ))
+        return redirect(url_for("login", msg="Your login token has expired"))
     except jwt.exceptions.DecodeError:
-        return redirect(url_for(
-            "login", 
-            msg="There was an issue logging you in"))
+        return redirect(url_for("login", msg="There was an issue logging you in"))
             
+@app.route('/cekpembayaran_visitor')
+def cekpembayaran_visitor():
+    token_receive = request.cookies.get("mytoken")
+    try:
+        payload = jwt.decode(
+            token_receive, 
+            SECRET_KEY, 
+            algorithms=["HS256"])
+        
+        if payload["role"] != "user":
+            return redirect(url_for("cekpembayaran_pemilik"))
+        
+        return render_template('cekpembayaran_visitor.html')
+    except jwt.ExpiredSignatureError:
+        return redirect(url_for("login", msg="Your login token has expired"))
+    except jwt.exceptions.DecodeError:
+        return redirect(url_for("login", msg="There was an issue logging you in"))
+    
+
+@app.route('/detailcourse_visitor')
+def detailcourse_visitor():
+    token_receive = request.cookies.get("mytoken")
+    try:
+        payload = jwt.decode(
+            token_receive, 
+            SECRET_KEY, 
+            algorithms=["HS256"])
+        
+        if payload["role"] != "user":
+            return redirect(url_for("detailcourse_pemilik"))
+        
+        return render_template('detailcourse_visitor.html')
+    except jwt.ExpiredSignatureError:
+        return redirect(url_for("login", msg="Your login token has expired"))
+    except jwt.exceptions.DecodeError:
+        return redirect(url_for("login", msg="There was an issue logging you in"))
+    
+
+@app.route('/discover_visitor')
+def discover_visitor():
+    token_receive = request.cookies.get("mytoken")
+    try:
+        payload = jwt.decode(
+            token_receive, 
+            SECRET_KEY, 
+            algorithms=["HS256"])
+        
+        if payload["role"] != "user":
+            return redirect(url_for("discover_pemilik"))
+        
+        return render_template('discover_visitor.html')
+    except jwt.ExpiredSignatureError:
+        return redirect(url_for("login", msg="Your login token has expired"))
+    except jwt.exceptions.DecodeError:
+        return redirect(url_for("login", msg="There was an issue logging you in"))
+
+@app.route('/listcourse_visitor')
+def listcourse_visitor():
+    token_receive = request.cookies.get("mytoken")
+    try:
+        payload = jwt.decode(
+            token_receive, 
+            SECRET_KEY, 
+            algorithms=["HS256"])
+        
+        if payload["role"] != "user":
+            return redirect(url_for("listcourse_pemilik"))
+        
+        return render_template('listcourse_visitor.html')
+    except jwt.ExpiredSignatureError:
+        return redirect(url_for("login", msg="Your login token has expired"))
+    except jwt.exceptions.DecodeError:
+        return redirect(url_for("login", msg="There was an issue logging you in"))
+
+@app.route('/mycourse_visitor')
+def mycourse_visitor():
+    token_receive = request.cookies.get("mytoken")
+    try:
+        payload = jwt.decode(
+            token_receive, 
+            SECRET_KEY, 
+            algorithms=["HS256"])
+        
+        if payload["role"] != "user":
+            return redirect(url_for("mycourse_pemilik"))
+        
+        return render_template('mycourse_visitor.html')
+    except jwt.ExpiredSignatureError:
+        return redirect(url_for("login", msg="Your login token has expired"))
+    except jwt.exceptions.DecodeError:
+        return redirect(url_for("login", msg="There was an issue logging you in"))
+
 @app.route('/home_pemilik')
 def home_pemilik():
     token_receive = request.cookies.get("mytoken")
@@ -159,45 +331,95 @@ def home_pemilik():
     except jwt.exceptions.DecodeError:
         return redirect(url_for("login", msg="There was an issue logging you in"))
 
-@app.route('/cekpembayaran_visitor')
-def cekpembayaran_visitor():
-    return render_template('cekpembayaran_visitor.html')
-
 @app.route('/cekpembayaran_pemilik')
 def cekpembayaran_pemilik():
-    return render_template('cekpembayaran_pemilik.html')
+    token_receive = request.cookies.get("mytoken")
+    try:
+        payload = jwt.decode(
+            token_receive, 
+            SECRET_KEY, 
+            algorithms=["HS256"])
 
-@app.route('/detailcourse_visitor')
-def detailcourse_visitor():
-    return render_template('detailcourse_visitor.html')
+        if payload["role"] != "admin":
+            return redirect(url_for("cekpembayaran_visitor"))
+
+        return render_template("cekpembayaran_pemilik.html")
+    except jwt.ExpiredSignatureError:
+        return redirect(url_for("login", msg="Your login token has expired"))
+    except jwt.exceptions.DecodeError:
+        return redirect(url_for("login", msg="There was an issue logging you in"))
 
 @app.route('/detailcourse_pemilik')
 def detailcourse_pemilik():
-    return render_template('detailcourse_pemilik.html')
+    token_receive = request.cookies.get("mytoken")
+    try:
+        payload = jwt.decode(
+            token_receive, 
+            SECRET_KEY, 
+            algorithms=["HS256"])
 
-@app.route('/discover_visitor')
-def discover_visitor():
-    return render_template('discover_visitor.html')
+        if payload["role"] != "admin":
+            return redirect(url_for("detailcourse_visitor"))
+
+        return render_template("detailcourse_pemilik.html")
+    except jwt.ExpiredSignatureError:
+        return redirect(url_for("login", msg="Your login token has expired"))
+    except jwt.exceptions.DecodeError:
+        return redirect(url_for("login", msg="There was an issue logging you in"))
 
 @app.route('/discover_pemilik')
 def discover_pemilik():
-    return render_template('discover_pemilik.html')
+    token_receive = request.cookies.get("mytoken")
+    try:
+        payload = jwt.decode(
+            token_receive, 
+            SECRET_KEY, 
+            algorithms=["HS256"])
 
-@app.route('/listcourse_visitor')
-def listcourse_visitor():
-    return render_template('listcourse_visitor.html')
+        if payload["role"] != "admin":
+            return redirect(url_for("discover_visitor"))
+
+        return render_template("discover_pemilik.html")
+    except jwt.ExpiredSignatureError:
+        return redirect(url_for("login", msg="Your login token has expired"))
+    except jwt.exceptions.DecodeError:
+        return redirect(url_for("login", msg="There was an issue logging you in"))
 
 @app.route('/listcourse_pemilik')
 def listcourse_pemilik():
-    return render_template('listcourse_pemilik.html')
+    token_receive = request.cookies.get("mytoken")
+    try:
+        payload = jwt.decode(
+            token_receive, 
+            SECRET_KEY, 
+            algorithms=["HS256"])
 
-@app.route('/mycourse_visitor')
-def mycourse_visitor():
-    return render_template('mycourse_visitor.html')
+        if payload["role"] != "admin":
+            return redirect(url_for("listcourse_visitor"))
+
+        return render_template("listcourse_pemilik.html")
+    except jwt.ExpiredSignatureError:
+        return redirect(url_for("login", msg="Your login token has expired"))
+    except jwt.exceptions.DecodeError:
+        return redirect(url_for("login", msg="There was an issue logging you in"))
 
 @app.route('/mycourse_pemilik')
 def mycourse_pemilik():
-    return render_template('mycourse_pemilik.html')
+    token_receive = request.cookies.get("mytoken")
+    try:
+        payload = jwt.decode(
+            token_receive, 
+            SECRET_KEY, 
+            algorithms=["HS256"])
+
+        if payload["role"] != "admin":
+            return redirect(url_for("mycourse_visitor"))
+
+        return render_template("mycourse_pemilik.html")
+    except jwt.ExpiredSignatureError:
+        return redirect(url_for("login", msg="Your login token has expired"))
+    except jwt.exceptions.DecodeError:
+        return redirect(url_for("login", msg="There was an issue logging you in"))
 
 if __name__ == "__main__":
     app.run("0.0.0.0", port=5000, debug=True)
