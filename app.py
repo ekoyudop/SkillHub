@@ -60,7 +60,7 @@ def discover():
     except jwt.exceptions.DecodeError:
         return render_template('discover.html')
     
-@app.route("/mycourse", methods=["GET"])
+@app.route('/mycourse')
 def mycourse():
     token_receive = request.cookies.get("mytoken")
     try:
@@ -79,7 +79,7 @@ def mycourse():
     except jwt.exceptions.DecodeError:
         return redirect(url_for("login"))
     
-@app.route("/cekpembayaran", methods=["GET"])
+@app.route('/cekpembayaran')
 def cekpembayaran():
     token_receive = request.cookies.get("mytoken")
     try:
@@ -98,7 +98,7 @@ def cekpembayaran():
     except jwt.exceptions.DecodeError:
         return redirect(url_for("login"))
 
-@app.route("/register", methods=["GET"])
+@app.route('/register')
 def register():
     token_receive = request.cookies.get("mytoken")
     try:
