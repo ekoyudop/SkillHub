@@ -112,8 +112,7 @@
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
         crossorigin="anonymous"></script>
 
-    <!-- Navbar Start -->
-    <nav class="navbar navbar-expand-lg bg-body-tertiary rounded" aria-label="Thirteenth navbar example" id="bg-nav">
+    <nav class="navbar navbar-expand-lg bg-body-tertiary rounded" aria-label="Thirteenth navbar example">
         <div class="container-fluid">
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample11"
                 aria-controls="navbarsExample11" aria-expanded="false" aria-label="Toggle navigation">
@@ -129,16 +128,14 @@
                         <a class="nav-link" href="/">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="/discover">Discover</a>
+                        <a class="nav-link" href="/discover">Discover</a>
                     </li>
-                    {% if logged_in %}
                     <li class="nav-item">
                         <a class="nav-link" href="/mycourse">My Course</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/cekpembayaran">Cek Pembayaran</a>
                     </li>
-                    {% endif %}
                 </ul>
                 {% if not logged_in %}
                 <div class="d-lg-flex col-lg-3 justify-content-lg-end">
@@ -154,7 +151,6 @@
             </div>
         </div>
     </nav>
-    <!-- Navbar End -->
 
     <div class="container">
         <div class="row">
@@ -165,7 +161,22 @@
                             <h3>Daftar Kategori</h3>
                         </a>
                     </div>
+                    <div class="p-2">
+                        <h3>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+                                class="bi bi-arrow-right" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd"
+                                    d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8" />
+                            </svg>
+                        </h3>
+                    </div>
+                    <div class="p-2">
+                        <a href="/listcourse" class="text-decoration-none custom-text-color">
+                            <h3>Web Development</h3>
+                        </a>
+                    </div>
                 </div>
+
                 {% if is_admin %}
                 <button type="button" class="btn btn-primary" id="tambah">Tambah +</button>
                 {% endif %}
@@ -175,11 +186,16 @@
                             <a href="#!"><img src="/static/bg-navbar.jpg" alt="Grocery Ecommerce Template"
                                     class="mb-3 img-fluid"></a>
                         </div>
-                        <h5>Web Development</h5>
+                        <h5>HTML</h5>
                         <div class="d-flex justify-content-lg-end">
-                            <a href="/listcourse">
+                            {% if is_admin %}
+                            <button type="button" class="btn btn-primary" id="button">Edit</button>
+                            <button type="button" class="btn btn-primary" id="button">Delete</button>
+                            {% endif %}
+                            <a href="/detailcourse">
                                 <button type="button" class="btn btn-primary" id="button">Detail</button>
                             </a>
+
                         </div>
                     </div>
                     <div class="col" id="card">
@@ -187,12 +203,16 @@
                             <a href="#!"><img src="/static/bg-navbar.jpg" alt="Grocery Ecommerce Template"
                                     class="mb-3 img-fluid"></a>
                         </div>
-                        <h5>Mobile Development</h5>
+                        <h5>CSS</h5>
                         <div class="d-flex justify-content-lg-end">
-                            <a href="/listcourse">
+                            {% if is_admin %}
+                            <button type="button" class="btn btn-primary" id="button">Edit</button>
+                            <button type="button" class="btn btn-primary" id="button">Delete</button>
+                            {% endif %}
+                            <a href="/detailcourse">
                                 <button type="button" class="btn btn-primary" id="button">Detail</button>
                             </a>
-
+                            
                         </div>
                     </div>
                 </div>
