@@ -7,6 +7,7 @@ import requests
 import jwt
 import datetime
 import hashlib
+from bson import ObjectId
 
 dotenv_path = join(dirname(__file__), '.env')
 load_dotenv(dotenv_path)
@@ -84,14 +85,66 @@ def discover():
         user_info = db.user.find_one({"id": payload["id"]})
         is_admin = user_info.get("role") == "admin"
         logged_in = True
-        
-        return render_template("discover.html", user_info=user_info, is_admin = is_admin, logged_in = logged_in)
+
+        kategori_list = db.kategori.find()
+
+        return render_template("discover.html", user_info=user_info, is_admin = is_admin, logged_in = logged_in, kategori_list=kategori_list)
     
     except jwt.ExpiredSignatureError:
         return render_template("discover.html", msg="Your token has expired")
     except jwt.exceptions.DecodeError:
         return render_template("discover.html", msg="There was problem logging you in")
     
+@app.route("/add_kategori", methods=["POST"])
+def add_kategori():
+    token_receive = request.cookies.get("mytoken")
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
+
+        kategori_receive = request.form["kategori_give"]
+
+        existing_kategori = db.kategori.find_one({"kategori": kategori_receive})
+        if existing_kategori:
+            return jsonify({"result": "error", "message": "Kategori sudah ada."})
+
+        db.kategori.insert_one({
+            "kategori": kategori_receive 
+        })
+
+        return jsonify({"result": "success"})
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return redirect(url_for("discover"))
+    
+@app.route('/edit_kategori/<string:kategori_id>', methods=['PUT'])
+def edit_kategori(kategori_id):
+    try:
+        kategori_edit = request.form.get('kategori_edit')
+
+        result = db.kategori.update_one({'_id': ObjectId(kategori_id)}, {'$set': {'kategori': kategori_edit}})
+        
+        if result.modified_count > 0:
+            response = {'result': 'success', 'message': 'Kategori edited successfully.'}
+        else:
+            response = {'result': 'error', 'message': 'Kategori not found or no changes made.'}
+    except Exception as e:
+        response = {'result': 'error', 'message': str(e)}
+
+    return jsonify(response)
+
+    
+@app.route('/delete_kategori/<string:kategori_id>', methods=['DELETE'])
+def delete_kategori(kategori_id):
+    try:
+        result = db.kategori.delete_one({'_id': ObjectId(kategori_id)})
+        if result.deleted_count > 0:
+            response = {'result': 'success', 'message': 'Kategori deleted successfully.'}
+        else:
+            response = {'result': 'error', 'message': 'Kategori not found.'}
+    except Exception as e:
+        response = {'result': 'error', 'message': str(e)}
+
+    return jsonify(response)
+
 @app.route('/mycourse', methods = ['GET'])
 def mycourse():
     token_receive = request.cookies.get("mytoken")
