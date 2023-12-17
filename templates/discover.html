@@ -227,6 +227,11 @@
                         <a class="nav-link" href="/cekpembayaran/{{user_info.id}}">Cek Pembayaran</a>
                     </li>
                     {% endif %}
+                    {% if is_admin %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/datapembayaran">Data Pembayaran</a>
+                    </li>
+                    {% endif %}
                 </ul>
                 {% if not logged_in %}
                 <div class="d-lg-flex col-lg-3 justify-content-lg-end">

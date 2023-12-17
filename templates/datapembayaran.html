@@ -183,14 +183,14 @@
 
     <div class="container">
         <div class="col">
-            {% for pembayaran in pembayaran_info %}
+            {% for pembayaran in pembayaran_list %}
             <div class="row" id="card">
                 <div class="d-flex">
                     <h5>Pembayaran Akses Course (Lifetime)<span class="badge rounded-pill text-bg-warning"
                             id="badge">Pending</span></h5>
                 </div>
-                <p>User : {{pembayaran_info.user}}</p>
-                <img src="/static/bg-navbar.jpg" alt="Bukti Pembayaran" id="bukti-pembayaran"
+                <p>User : {{pembayaran.user}}</p>
+                <img src="/{{pembayaran.image}}" alt="Bukti Pembayaran" id="bukti-pembayaran"
                     class="rounded mx-auto d-block">
                 <div class="d-flex justify-content-end">
                     <button type="button" class="btn btn-primary" id="submit">Acept</button>

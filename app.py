@@ -179,16 +179,46 @@ def cekpembayaran(id):
         user_info = db.user.find_one({"id": payload["id"]})
         is_admin = user_info.get("role") == "admin"
         logged_in = True
+
+        pembayaran_info = db.pembayaran.find()
         
         return render_template("cekpembayaran.html", 
                                user_info=user_info, 
                                is_admin = is_admin, 
-                               logged_in = logged_in)
+                               logged_in = logged_in,
+                               pembayaran_info=pembayaran_info)
     
     except jwt.ExpiredSignatureError:
         return render_template("cekpembayaran.html", msg="Your token has expired")
     except jwt.exceptions.DecodeError:
         return render_template("cekpembayaran.html", msg="There was problem logging you in")
+    
+@app.route('/datapembayaran', methods = ['GET'])
+def datapembayaran():
+    token_receive = request.cookies.get("mytoken")
+    try:
+        if token_receive:
+            payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
+            user_info = db.user.find_one({"id": payload["id"]})
+            is_admin = user_info.get("role") == "admin"
+            logged_in = True
+        else:
+            user_info = None
+            is_admin = False
+            logged_in = False
+
+        pembayaran_list = db.pembayaran.find()
+
+        return render_template("datapembayaran.html", 
+                               user_info=user_info, 
+                               is_admin = is_admin,
+                               logged_in = logged_in,
+                               pembayaran_list=pembayaran_list)
+    
+    except jwt.ExpiredSignatureError:
+        return render_template("datapembayaran.html", msg="Your token has expired")
+    except jwt.exceptions.DecodeError:
+        return render_template("datapembayaran.html", msg="There was problem logging you in")
     
 @app.route("/pembayaran", methods=["POST"])
 def pembayaran():
