@@ -27,17 +27,19 @@ SECRET_KEY = "SKILLHUB"
 def index():
     token_receive = request.cookies.get("mytoken")
     try:
-        payload = jwt.decode(
-            token_receive, 
-            SECRET_KEY, 
-            algorithms=["HS256"])
-        user_info = db.user.find_one({"id": payload["id"]})
-        is_admin = user_info.get("role") == "admin"
-        logged_in = True
+        if token_receive:
+            payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
+            user_info = db.user.find_one({"id": payload["id"]})
+            is_admin = user_info.get("role") == "admin"
+            logged_in = True
+        else:
+            user_info = None
+            is_admin = False
+            logged_in = False
 
         course_list = db.course.find()
         
-        return render_template("index.html", user_info=user_info, is_admin = is_admin, logged_in = logged_in,course_list=course_list)
+        return render_template("index.html", user_info=user_info, is_admin = is_admin, logged_in = logged_in, course_list=course_list)
     
     except jwt.ExpiredSignatureError:
         return render_template("index.html", msg="Your token has expired")
@@ -80,16 +82,17 @@ def login():
 def discover():
     token_receive = request.cookies.get("mytoken")
     try:
-        payload = jwt.decode(
-            token_receive, 
-            SECRET_KEY, 
-            algorithms=["HS256"])
-        user_info = db.user.find_one({"id": payload["id"]})
-        is_admin = user_info.get("role") == "admin"
-        logged_in = True
+        if token_receive:
+            payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
+            user_info = db.user.find_one({"id": payload["id"]})
+            is_admin = user_info.get("role") == "admin"
+            logged_in = True
+        else:
+            user_info = None
+            is_admin = False
+            logged_in = False
 
         course_list = db.course.find()
-        user = db.user.find()
 
         return render_template("discover.html", 
                                user_info=user_info, 
@@ -101,6 +104,89 @@ def discover():
         return render_template("discover.html", msg="Your token has expired")
     except jwt.exceptions.DecodeError:
         return render_template("discover.html", msg="There was problem logging you in")
+    
+@app.route('/previewcourse/<string:course_id>', methods = ['GET'])
+def previewcourse(course_id):
+    token_receive = request.cookies.get("mytoken")
+    try:
+        payload = jwt.decode(
+            token_receive, 
+            SECRET_KEY, 
+            algorithms=["HS256"])
+        user_info = db.user.find_one({"id": payload["id"]})
+        is_admin = user_info.get("role") == "admin"
+        logged_in = True
+        
+        course_list = db.course.find_one({'_id': ObjectId(course_id)})
+
+        return render_template("previewcourse.html", 
+                               user_info=user_info, 
+                               is_admin = is_admin, 
+                               logged_in = logged_in,
+                               course_list=course_list)
+    
+    except jwt.ExpiredSignatureError:
+        return render_template("previewcourse.html", msg="Your token has expired")
+    except jwt.exceptions.DecodeError:
+        return render_template("previewcourse.html", msg="There was problem logging you in")
+
+@app.route('/mycourse', methods = ['GET'])
+def mycourse():
+    token_receive = request.cookies.get("mytoken")
+    try:
+        payload = jwt.decode(
+            token_receive, 
+            SECRET_KEY, 
+            algorithms=["HS256"])
+        user_info = db.user.find_one({"id": payload["id"]})
+        is_admin = user_info.get("role") == "admin"
+        logged_in = True
+        
+        return render_template("mycourse.html", user_info=user_info, is_admin = is_admin, logged_in = logged_in)
+    
+    except jwt.ExpiredSignatureError:
+        return render_template("mycourse.html", msg="Your token has expired")
+    except jwt.exceptions.DecodeError:
+        return render_template("mycourse.html", msg="There was problem logging you in")
+    
+@app.route('/detailcourse', methods = ['GET'])
+def detailcourse():
+    token_receive = request.cookies.get("mytoken")
+    try:
+        payload = jwt.decode(
+            token_receive, 
+            SECRET_KEY, 
+            algorithms=["HS256"])
+        user_info = db.user.find_one({"id": payload["id"]})
+        is_admin = user_info.get("role") == "admin"
+        logged_in = True
+        
+        return render_template("detailcourse.html", user_info=user_info, is_admin = is_admin, logged_in = logged_in)
+    
+    except jwt.ExpiredSignatureError:
+        return render_template("detailcourse.html", msg="Your token has expired")
+    except jwt.exceptions.DecodeError:
+        return render_template("detailcourse.html", msg="There was problem logging you in")
+    
+@app.route('/cekpembayaran/<id>', methods = ['GET'])
+def cekpembayaran(id):
+    token_receive = request.cookies.get("mytoken")
+    try:
+        payload = jwt.decode(
+            token_receive, 
+            SECRET_KEY, 
+            algorithms=["HS256"])
+        user_info = db.user.find_one({"id": payload["id"]})
+        pembayaran_info = db.pembayaran.find_one()
+        is_admin = user_info.get("role") == "admin"
+        logged_in = True
+        
+        return render_template("cekpembayaran.html", user_info=user_info, is_admin = is_admin, logged_in = logged_in, pembayaran_info=pembayaran_info)
+    
+    except jwt.ExpiredSignatureError:
+        return render_template("cekpembayaran.html", msg="Your token has expired")
+    except jwt.exceptions.DecodeError:
+        return render_template("cekpembayaran.html", msg="There was problem logging you in")
     
 @app.route("/pembayaran", methods=["POST"])
 def pembayaran():
@@ -197,90 +283,6 @@ def delete_course(course_id):
         response = {'result': 'error', 'message': str(e)}
 
     return jsonify(response)
-
-@app.route('/previewcourse/<string:course_id>', methods = ['GET'])
-def previewcourse(course_id):
-    token_receive = request.cookies.get("mytoken")
-    try:
-        payload = jwt.decode(
-            token_receive, 
-            SECRET_KEY, 
-            algorithms=["HS256"])
-        user_info = db.user.find_one({"id": payload["id"]})
-        is_admin = user_info.get("role") == "admin"
-        logged_in = True
-        
-        course_list = db.course.find_one({'_id': ObjectId(course_id)})
-
-        return render_template("previewcourse.html", 
-                               user_info=user_info, 
-                               is_admin = is_admin, 
-                               logged_in = logged_in,
-                               course_list=course_list)
-    
-    except jwt.ExpiredSignatureError:
-        return render_template("previewcourse.html", msg="Your token has expired")
-    except jwt.exceptions.DecodeError:
-        return render_template("previewcourse.html", msg="There was problem logging you in")
-    
-
-    
-@app.route('/detailcourse', methods = ['GET'])
-def detailcourse():
-    token_receive = request.cookies.get("mytoken")
-    try:
-        payload = jwt.decode(
-            token_receive, 
-            SECRET_KEY, 
-            algorithms=["HS256"])
-        user_info = db.user.find_one({"id": payload["id"]})
-        is_admin = user_info.get("role") == "admin"
-        logged_in = True
-        
-        return render_template("detailcourse.html", user_info=user_info, is_admin = is_admin, logged_in = logged_in)
-    
-    except jwt.ExpiredSignatureError:
-        return render_template("detailcourse.html", msg="Your token has expired")
-    except jwt.exceptions.DecodeError:
-        return render_template("detailcourse.html", msg="There was problem logging you in")
-
-@app.route('/mycourse', methods = ['GET'])
-def mycourse():
-    token_receive = request.cookies.get("mytoken")
-    try:
-        payload = jwt.decode(
-            token_receive, 
-            SECRET_KEY, 
-            algorithms=["HS256"])
-        user_info = db.user.find_one({"id": payload["id"]})
-        is_admin = user_info.get("role") == "admin"
-        logged_in = True
-        
-        return render_template("mycourse.html", user_info=user_info, is_admin = is_admin, logged_in = logged_in)
-    
-    except jwt.ExpiredSignatureError:
-        return render_template("mycourse.html", msg="Your token has expired")
-    except jwt.exceptions.DecodeError:
-        return render_template("mycourse.html", msg="There was problem logging you in")
-    
-@app.route('/cekpembayaran/<id>', methods = ['GET'])
-def cekpembayaran(id):
-    token_receive = request.cookies.get("mytoken")
-    try:
-        payload = jwt.decode(
-            token_receive, 
-            SECRET_KEY, 
-            algorithms=["HS256"])
-        user_info = db.user.find_one({"id": payload["id"]})
-        is_admin = user_info.get("role") == "admin"
-        logged_in = True
-        
-        return render_template("cekpembayaran.html", user_info=user_info, is_admin = is_admin, logged_in = logged_in)
-    
-    except jwt.ExpiredSignatureError:
-        return render_template("cekpembayaran.html", msg="Your token has expired")
-    except jwt.exceptions.DecodeError:
-        return render_template("cekpembayaran.html", msg="There was problem logging you in")
 
 @app.route("/api/register", methods=["POST"])
 def api_register():
