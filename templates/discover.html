@@ -144,7 +144,6 @@
             });
         }
 
-
         function edit_course(course_id) {
             var formData = new FormData();
             formData.append('course_edit', $("#course_edit").val());
@@ -225,7 +224,7 @@
                         <a class="nav-link" href="/mycourse">My Course</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/cekpembayaran">Cek Pembayaran</a>
+                        <a class="nav-link" href="/cekpembayaran/{{user_info.id}}">Cek Pembayaran</a>
                     </li>
                     {% endif %}
                 </ul>
@@ -237,6 +236,7 @@
                 {% endif %}
                 {% if logged_in %}
                 <div class="d-lg-flex col-lg-3 justify-content-lg-end">
+                    <p>{{user_info.id}}</p>
                     <button class="btn btn-primary" id="logout" onclick="logout()">Logout</button>
                 </div>
                 {% endif %}

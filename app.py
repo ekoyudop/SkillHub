@@ -89,13 +89,47 @@ def discover():
         logged_in = True
 
         course_list = db.course.find()
+        user = db.user.find()
 
-        return render_template("discover.html", user_info=user_info, is_admin = is_admin, logged_in = logged_in, course_list=course_list)
+        return render_template("discover.html", 
+                               user_info=user_info, 
+                               is_admin = is_admin,
+                               logged_in = logged_in,
+                               course_list=course_list)
     
     except jwt.ExpiredSignatureError:
         return render_template("discover.html", msg="Your token has expired")
     except jwt.exceptions.DecodeError:
         return render_template("discover.html", msg="There was problem logging you in")
+    
+@app.route("/pembayaran", methods=["POST"])
+def pembayaran():
+    from datetime import datetime
+    token_receive = request.cookies.get("mytoken")
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
+
+        id_receive = request.form["id_give"]
+        status_receive = request.form["status_give"]
+        image_receive = request.files["image_give"]
+
+        today = datetime.now()
+        mytime = today.strftime("%Y-%m-%d-%H-%M-%S")
+
+        if image_receive:
+            extension = image_receive.filename.split('.')[-1]
+            filename = f'static/post-{mytime}.{extension}'
+            image_receive.save(filename)
+
+        db.pembayaran.insert_one({
+            "user": id_receive,
+            "status": status_receive,
+            "image": filename if image_receive else None
+        })
+
+        return jsonify({"result": "success"})
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return redirect(url_for("pembayaran/<id>"))
     
 @app.route("/add_course", methods=["POST"])
 def add_course():
@@ -181,14 +215,15 @@ def previewcourse(course_id):
         return render_template("previewcourse.html", 
                                user_info=user_info, 
                                is_admin = is_admin, 
-                               logged_in = logged_in, 
-                               course_name=course_list["course"],
-                               course_deskripsi=course_list["deskripsi"],)
+                               logged_in = logged_in,
+                               course_list=course_list)
     
     except jwt.ExpiredSignatureError:
         return render_template("previewcourse.html", msg="Your token has expired")
     except jwt.exceptions.DecodeError:
         return render_template("previewcourse.html", msg="There was problem logging you in")
+    
+
     
 @app.route('/detailcourse', methods = ['GET'])
 def detailcourse():
@@ -228,8 +263,8 @@ def mycourse():
     except jwt.exceptions.DecodeError:
         return render_template("mycourse.html", msg="There was problem logging you in")
     
-@app.route('/cekpembayaran', methods = ['GET'])
-def cekpembayaran():
+@app.route('/cekpembayaran/<id>', methods = ['GET'])
+def cekpembayaran(id):
     token_receive = request.cookies.get("mytoken")
     try:
         payload = jwt.decode(

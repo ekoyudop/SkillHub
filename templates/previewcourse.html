@@ -133,21 +133,21 @@
         <div class="row">
             <div class="col" id="kategori">
                 <div class="d-flex flex-row mb-3" id="judul_course">
-                    <h3>{{course_name}}</h3>
+                    <h3>{{course_list.course}}</h3>
                 </div>
                 {% if is_admin %}
                 <button type="button" class="btn btn-primary" id="edit">Edit</button>
                 {% endif %}
                 <div class="container" id="course">
-                    <h2>{{ course_name}} Introduction</h2>
-                    <p>{{ course_deskripsi}}</p>
+                    <h2>{{course_list.course}} Introduction</h2>
+                    <p>{{course_list.deskripsi}}</p>
 
                     <h2>Materi</h2>
-                    <p>1. {{course_judul1}} <br>
-                        2. {{course_judul2}} <br>
-                        3. {{course_judul3}} <br>
-                        4. {{course_judul4}} <br>
-                        5. {{course_judul5}}
+                    <p>1. {{course_list.judul1}} <br>
+                        2. {{course_list.judul2}} <br>
+                        3. {{course_list.judul3}} <br>
+                        4. {{course_list.judul4}} <br>
+                        5. {{course_list.judul5}}
                     </p>
 
                     <h3 class="text-center">Hanya Rp. 100.000 anda bisa mendapatkan akses <br>ke seluruh course yang ada di SkillHub!</h3>
