@@ -105,6 +105,7 @@ def add_course():
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
 
         course_receive = request.form["course_give"]
+        deksripsi_receive = request.form["deskripsi_give"]
         image_receive = request.files["image_give"]
 
         today = datetime.now()
@@ -122,6 +123,7 @@ def add_course():
 
         db.course.insert_one({
             "course": course_receive,
+            "deskripsi": deksripsi_receive,
             'image': filename if image_receive else None
         })
 

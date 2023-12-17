@@ -30,7 +30,8 @@
         }
 
         #login,
-        #register, #logout {
+        #register,
+        #logout {
             margin-right: 20px;
         }
 
@@ -75,7 +76,7 @@
 
         .img-fluid {
             height: 120px;
-            width: 100%;  
+            width: 100%;
         }
 
         #tambah {
@@ -113,6 +114,7 @@
         function add_course() {
             var formData = new FormData();
             formData.append('course_give', $("#course").val());
+            formData.append('deskripsi_give', $("#deskripsi").val());
             formData.append('image_give', $('#image')[0].files[0]);
 
             $.ajax({
@@ -253,6 +255,10 @@
                                     <input type="text" class="form-control" id="course" required="">
                                 </div>
                                 <div class="mb-3">
+                                    <label for="" class="form-label">Deskripsi</label>
+                                    <textarea class="form-control" id="deskripsi" rows="3"></textarea>
+                                </div>
+                                <div class="mb-3">
                                     <label for="" class="form-label">Gambar</label>
                                     <input type="file" class="form-control" id="image" required="">
                                 </div>
@@ -295,6 +301,10 @@
                                             <div class="mb-3">
                                                 <label for="" class="form-label">Course</label>
                                                 <input type="text" class="form-control" id="course_edit" required="">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="" class="form-label">Deskripsi</label>
+                                                <textarea class="form-control" id="deskripsi_edit" rows="3"></textarea>
                                             </div>
                                             <div class="mb-3">
                                                 <label for="" class="form-label">Gambar</label>
