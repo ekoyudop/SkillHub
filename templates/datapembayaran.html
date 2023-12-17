@@ -183,37 +183,21 @@
 
     <div class="container">
         <div class="col">
-            {% if is_admin %}
-                {% for pembayaran in pembayaran_info %}
-                <div class="row" id="card">
-                    <div class="d-flex">
-                        <h5>Pembayaran Akses Course (Lifetime)<span class="badge rounded-pill text-bg-warning"
-                                id="badge">Pending</span></h5>
-                    </div>
-                    <p>User : {{pembayaran_info.user}}</p>
-                    <img src="/static/bg-navbar.jpg" alt="Bukti Pembayaran" id="bukti-pembayaran"
-                        class="rounded mx-auto d-block">
-                    <div class="d-flex justify-content-end">
-                        <button type="button" class="btn btn-primary" id="submit">Acept</button>
-                        <button type="button" class="btn btn-primary" id="submit">Deny</button>
-                    </div>
-                </div>
-                {% endfor %}
-            {% endif %}
-            {% if not is_admin %}
+            {% for pembayaran in pembayaran_info %}
             <div class="row" id="card">
                 <div class="d-flex">
-                    <h5>Akses Course (Lifetime) <span class="badge rounded-pill text-bg-warning"
+                    <h5>Pembayaran Akses Course (Lifetime)<span class="badge rounded-pill text-bg-warning"
                             id="badge">Pending</span></h5>
                 </div>
-                <p id="pembayaran">Total Pembayaran : Rp. 100.000</p>
+                <p>User : {{pembayaran_info.user}}</p>
+                <img src="/static/bg-navbar.jpg" alt="Bukti Pembayaran" id="bukti-pembayaran"
+                    class="rounded mx-auto d-block">
                 <div class="d-flex justify-content-end">
-                    <label for="formFile" class="form-label"></label>
-                    <input class="form-control" type="file" id="imagesubmit">
-                    <button type="button" class="btn btn-primary" id="submit" onclick="pembayaran()">Submit</button>
+                    <button type="button" class="btn btn-primary" id="submit">Acept</button>
+                    <button type="button" class="btn btn-primary" id="submit">Deny</button>
                 </div>
             </div>
-            {% endif %}
+            {% endfor %}
         </div>
     </div>
 </body>

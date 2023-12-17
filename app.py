@@ -177,11 +177,13 @@ def cekpembayaran(id):
             SECRET_KEY, 
             algorithms=["HS256"])
         user_info = db.user.find_one({"id": payload["id"]})
-        pembayaran_info = db.pembayaran.find_one()
         is_admin = user_info.get("role") == "admin"
         logged_in = True
         
-        return render_template("cekpembayaran.html", user_info=user_info, is_admin = is_admin, logged_in = logged_in, pembayaran_info=pembayaran_info)
+        return render_template("cekpembayaran.html", 
+                               user_info=user_info, 
+                               is_admin = is_admin, 
+                               logged_in = logged_in)
     
     except jwt.ExpiredSignatureError:
         return render_template("cekpembayaran.html", msg="Your token has expired")
