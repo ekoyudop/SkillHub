@@ -11,35 +11,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
 
     <style>
-        /* Navbar Start */
         #navbar {
             margin: 10px;
         }
-
-        #bg-nav .navbar-nav a.nav-link.active {
-            font-weight: bold;
-            color: #0d6efd;
-        }
-
-        #bg-nav .navbar-nav a.nav-link:hover {
-            color: #0d6efd;
-        }
-
-        #logo {
-            margin-left: 20px;
-        }
-
-        #login,
-        #register {
-            margin-right: 20px;
-        }
-
-        #logout:hover {
-            background-color: #1585c5;
-            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-        }
-
-        /* Navbar End */
 
         #image-container {
             text-align: center;
@@ -64,23 +38,26 @@
             color: black;
         }
 
-        #card {
+        #course {
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 1px 10px rgba(0, 0, 0, 0.1);
-            margin-left: 25px;
+            margin-left: 10px;
             margin-right: 10px;
-            margin-top: 10px;
         }
 
-        #tambah {
-            margin-left: 15px;
+        .center-button {
+            text-align: center;
         }
 
-        #button {
-            margin-left: 5px;
+        #edit {
+            margin-left: 10px;
+            margin-bottom: 10px;
         }
 
+        #judul_course {
+            margin-left: 10px;
+        }
         /* Footer Start */
         body {
             display: flex;
@@ -155,72 +132,33 @@
     <div class="container">
         <div class="row">
             <div class="col" id="kategori">
-                <div class="d-flex flex-row mb-3">
-                    <div class="p-2">
-                        <a href="/discover" class="text-decoration-none custom-text-color">
-                            <h3>Daftar Kategori</h3>
-                        </a>
-                    </div>
-                    <div class="p-2">
-                        <h3>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
-                                class="bi bi-arrow-right" viewBox="0 0 16 16">
-                                <path fill-rule="evenodd"
-                                    d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8" />
-                            </svg>
-                        </h3>
-                    </div>
-                    <div class="p-2">
-                        <a href="/listcourse" class="text-decoration-none custom-text-color">
-                            <h3>Web Development</h3>
-                        </a>
-                    </div>
+                <div class="d-flex flex-row mb-3" id="judul_course">
+                    <h3>{{course_name}}</h3>
                 </div>
-
                 {% if is_admin %}
-                <button type="button" class="btn btn-primary" id="tambah">Tambah +</button>
+                <button type="button" class="btn btn-primary" id="edit">Edit</button>
                 {% endif %}
-                <div class="row row-cols-lg-5 row-cols-2 row-cols-md-3">
-                    <div class="col" id="card">
-                        <div class="text-center position-relative">
-                            <a href="#!"><img src="/static/bg-navbar.jpg" alt="Grocery Ecommerce Template"
-                                    class="mb-3 img-fluid"></a>
-                        </div>
-                        <h5>HTML</h5>
-                        <div class="d-flex justify-content-lg-end">
-                            {% if is_admin %}
-                            <button type="button" class="btn btn-primary" id="button">Edit</button>
-                            <button type="button" class="btn btn-primary" id="button">Delete</button>
-                            {% endif %}
-                            <a href="/detailcourse">
-                                <button type="button" class="btn btn-primary" id="button">Detail</button>
-                            </a>
+                <div class="container" id="course">
+                    <h2>{{ course_name}} Introduction</h2>
+                    <p>{{ course_deskripsi}}</p>
 
-                        </div>
-                    </div>
-                    <div class="col" id="card">
-                        <div class="text-center position-relative">
-                            <a href="#!"><img src="/static/bg-navbar.jpg" alt="Grocery Ecommerce Template"
-                                    class="mb-3 img-fluid"></a>
-                        </div>
-                        <h5>CSS</h5>
-                        <div class="d-flex justify-content-lg-end">
-                            {% if is_admin %}
-                            <button type="button" class="btn btn-primary" id="button">Edit</button>
-                            <button type="button" class="btn btn-primary" id="button">Delete</button>
-                            {% endif %}
-                            <a href="/detailcourse">
-                                <button type="button" class="btn btn-primary" id="button">Detail</button>
-                            </a>
-                            
-                        </div>
+                    <h2>Materi</h2>
+                    <p>1. {{course_judul1}} <br>
+                        2. {{course_judul2}} <br>
+                        3. {{course_judul3}} <br>
+                        4. {{course_judul4}} <br>
+                        5. {{course_judul5}}
+                    </p>
+
+                    <h3 class="text-center">Hanya Rp. 100.000 anda bisa mendapatkan akses <br>ke seluruh course yang ada di SkillHub!</h3>
+                    <div class="center-button">
+                        <button type="button" class="btn btn-primary">Bayar Sekarang!</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </body>
-
 <!-- Footer Start-->
 <footer id="footer">
     <hr>
@@ -275,5 +213,4 @@
 </footer>
 
 <!-- Footer End -->
-
 </html>

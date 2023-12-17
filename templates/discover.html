@@ -115,6 +115,16 @@
             var formData = new FormData();
             formData.append('course_give', $("#course").val());
             formData.append('deskripsi_give', $("#deskripsi").val());
+            formData.append('judul1_give', $("#judul1").val());
+            formData.append('materi1_give', $("#materi1").val());
+            formData.append('judul2_give', $("#judul2").val());
+            formData.append('materi2_give', $("#materi2").val());
+            formData.append('judul3_give', $("#judul3").val());
+            formData.append('materi3_give', $("#materi3").val());
+            formData.append('judul4_give', $("#judul4").val());
+            formData.append('materi4_give', $("#materi4").val());
+            formData.append('judul5_give', $("#judul5").val());
+            formData.append('materi5_give', $("#materi5").val());
             formData.append('image_give', $('#image')[0].files[0]);
 
             $.ajax({
@@ -136,14 +146,27 @@
 
 
         function edit_course(course_id) {
+            var formData = new FormData();
+            formData.append('course_edit', $("#course_edit").val());
+            formData.append('deskripsi_edit', $("#deskripsi_edit").val());
+            formData.append('judul1_edit', $("#judul1_edit").val());
+            formData.append('materi1_edit', $("#materi1_edit").val());
+            formData.append('judul2_edit', $("#judul2_edit").val());
+            formData.append('materi2_edit', $("#materi2_edit").val());
+            formData.append('judul3_edit', $("#judul3_edit").val());
+            formData.append('materi3_edit', $("#materi3_edit").val());
+            formData.append('judul4_edit', $("#judul4_edit").val());
+            formData.append('materi4_edit', $("#materi4_edit").val());
+            formData.append('judul5_edit', $("#judul5_edit").val());
+            formData.append('materi5_edit', $("#materi5_edit").val());
+            formData.append('image_edit', $('#image_edit')[0].files[0]);
+
             $.ajax({
                 type: "PUT",
                 url: "/edit_course/" + course_id,
-                data: {
-                    course_edit: $("#course_edit").val(),
-                    // Tambahkan data lain yang perlu diupdate
-                },
-
+                data: formData,
+                processData: false, // important
+                contentType: false, // important
                 success: function (response) {
                     if (response["result"] === "success") {
                         alert("Berhasil mengedit course");
@@ -228,7 +251,7 @@
                 <div class="d-flex flex-row mb-3">
                     <div class="p-2">
                         <a href="/discover" class="text-decoration-none custom-text-color">
-                            <h3>Daftar Course</h3>
+                            <h3>List Course</h3>
                         </a>
                     </div>
                 </div>
@@ -256,7 +279,47 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="" class="form-label">Deskripsi</label>
-                                    <textarea class="form-control" id="deskripsi" rows="3"></textarea>
+                                    <textarea class="form-control" id="deskripsi" rows="2"></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="" class="form-label">Judul Materi 1</label>
+                                    <textarea class="form-control" id="judul1" rows="1"></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="" class="form-label">Isi Materi 1</label>
+                                    <textarea class="form-control" id="materi1" rows="2"></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="" class="form-label">Judul Materi 2</label>
+                                    <textarea class="form-control" id="judul2" rows="1"></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="" class="form-label">Isi Materi 2</label>
+                                    <textarea class="form-control" id="materi2" rows="2"></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="" class="form-label">Judul Materi 3</label>
+                                    <textarea class="form-control" id="judul3" rows="1"></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="" class="form-label">Isi Materi 3</label>
+                                    <textarea class="form-control" id="materi3" rows="2"></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="" class="form-label">Judul Materi 4</label>
+                                    <textarea class="form-control" id="judul4" rows="1"></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="" class="form-label">Isi Materi 4</label>
+                                    <textarea class="form-control" id="materi4" rows="2"></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="" class="form-label">Judul Materi 5</label>
+                                    <textarea class="form-control" id="judul5" rows="1"></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="" class="form-label">Isi Materi 5</label>
+                                    <textarea class="form-control" id="materi5" rows="2"></textarea>
                                 </div>
                                 <div class="mb-3">
                                     <label for="" class="form-label">Gambar</label>
@@ -281,49 +344,10 @@
                         <h5>{{ course.course }}</h5>
                         <div class="d-flex justify-content-lg-end">
                             {% if is_admin %}
-                            <!-- Button trigger modal -->
-                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                data-bs-target="#exampleModal2" id="button">
-                                Edit
-                            </button>
-
-                            <!-- Modal -->
-                            <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel"
-                                aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h1 class="modal-title fs-5" id="exampleModalLabel">Edit Course</h1>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <div class="mb-3">
-                                                <label for="" class="form-label">Course</label>
-                                                <input type="text" class="form-control" id="course_edit" required="">
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="" class="form-label">Deskripsi</label>
-                                                <textarea class="form-control" id="deskripsi_edit" rows="3"></textarea>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="" class="form-label">Gambar</label>
-                                                <input type="file" class="form-control" id="image_edit" required="">
-                                            </div>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary"
-                                                data-bs-dismiss="modal">Cancel</button>
-                                            <button type="button" class="btn btn-primary"
-                                                onclick="edit_course('{{ course._id }}')">Edit</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                             <button type="button" class="btn btn-primary" id="button"
                                 onclick="delete_course('{{ course._id }}')">Delete</button>
                             {% endif %}
-                            <a href="/listcourse">
+                            <a href="/previewcourse/{{course._id}}">
                                 <button type="button" class="btn btn-primary" id="button">Detail</button>
                             </a>
                         </div>

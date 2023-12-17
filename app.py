@@ -105,7 +105,17 @@ def add_course():
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
 
         course_receive = request.form["course_give"]
-        deksripsi_receive = request.form["deskripsi_give"]
+        deskripsi_receive = request.form["deskripsi_give"]
+        judul1_receive = request.form["judul1_give"]
+        materi1_receive = request.form["materi1_give"]
+        judul2_receive = request.form["judul2_give"]
+        materi2_receive = request.form["materi2_give"]
+        judul3_receive = request.form["judul3_give"]
+        materi3_receive = request.form["materi3_give"]
+        judul4_receive = request.form["judul4_give"]
+        materi4_receive = request.form["materi4_give"]
+        judul5_receive = request.form["judul5_give"]
+        materi5_receive = request.form["materi5_give"]
         image_receive = request.files["image_give"]
 
         today = datetime.now()
@@ -123,31 +133,24 @@ def add_course():
 
         db.course.insert_one({
             "course": course_receive,
-            "deskripsi": deksripsi_receive,
-            'image': filename if image_receive else None
+            "deskripsi": deskripsi_receive,
+            "judul1": judul1_receive,
+            "materi1": materi1_receive,
+            "judul2": judul2_receive,
+            "materi2": materi2_receive,
+            "judul3": judul3_receive,
+            "materi3": materi3_receive,
+            "judul4": judul4_receive,
+            "materi4": materi4_receive,
+            "judul5": judul5_receive,
+            "materi5": materi5_receive,
+            "image": filename if image_receive else None
         })
 
         return jsonify({"result": "success"})
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for("discover"))
-    
-@app.route('/edit_course/<string:course_id>', methods=['PUT'])
-def edit_course(course_id):
-    try:
-        course_edit = request.form.get('course_edit')
-
-        result = db.course.update_one({'_id': ObjectId(course_id)}, {'$set': {'course': course_edit}})
-        
-        if result.modified_count > 0:
-            response = {'result': 'success', 'message': 'Course edited successfully.'}
-        else:
-            response = {'result': 'error', 'message': 'Course not found or no changes made.'}
-    except Exception as e:
-        response = {'result': 'error', 'message': str(e)}
-
-    return jsonify(response)
-
-    
+         
 @app.route('/delete_course/<string:course_id>', methods=['DELETE'])
 def delete_course(course_id):
     try:
@@ -161,8 +164,8 @@ def delete_course(course_id):
 
     return jsonify(response)
 
-@app.route('/listcourse', methods = ['GET'])
-def listcourse():
+@app.route('/previewcourse/<string:course_id>', methods = ['GET'])
+def previewcourse(course_id):
     token_receive = request.cookies.get("mytoken")
     try:
         payload = jwt.decode(
@@ -173,12 +176,19 @@ def listcourse():
         is_admin = user_info.get("role") == "admin"
         logged_in = True
         
-        return render_template("listcourse.html", user_info=user_info, is_admin = is_admin, logged_in = logged_in)
+        course_list = db.course.find_one({'_id': ObjectId(course_id)})
+
+        return render_template("previewcourse.html", 
+                               user_info=user_info, 
+                               is_admin = is_admin, 
+                               logged_in = logged_in, 
+                               course_name=course_list["course"],
+                               course_deskripsi=course_list["deskripsi"],)
     
     except jwt.ExpiredSignatureError:
-        return render_template("listcourse.html", msg="Your token has expired")
+        return render_template("previewcourse.html", msg="Your token has expired")
     except jwt.exceptions.DecodeError:
-        return render_template("listcourse.html", msg="There was problem logging you in")
+        return render_template("previewcourse.html", msg="There was problem logging you in")
     
 @app.route('/detailcourse', methods = ['GET'])
 def detailcourse():
