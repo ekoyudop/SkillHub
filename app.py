@@ -34,8 +34,10 @@ def index():
         user_info = db.user.find_one({"id": payload["id"]})
         is_admin = user_info.get("role") == "admin"
         logged_in = True
+
+        course_list = db.course.find()
         
-        return render_template("index.html", user_info=user_info, is_admin = is_admin, logged_in = logged_in)
+        return render_template("index.html", user_info=user_info, is_admin = is_admin, logged_in = logged_in,course_list=course_list)
     
     except jwt.ExpiredSignatureError:
         return render_template("index.html", msg="Your token has expired")
@@ -86,64 +88,114 @@ def discover():
         is_admin = user_info.get("role") == "admin"
         logged_in = True
 
-        kategori_list = db.kategori.find()
+        course_list = db.course.find()
 
-        return render_template("discover.html", user_info=user_info, is_admin = is_admin, logged_in = logged_in, kategori_list=kategori_list)
+        return render_template("discover.html", user_info=user_info, is_admin = is_admin, logged_in = logged_in, course_list=course_list)
     
     except jwt.ExpiredSignatureError:
         return render_template("discover.html", msg="Your token has expired")
     except jwt.exceptions.DecodeError:
         return render_template("discover.html", msg="There was problem logging you in")
     
-@app.route("/add_kategori", methods=["POST"])
-def add_kategori():
+@app.route("/add_course", methods=["POST"])
+def add_course():
+    from datetime import datetime
     token_receive = request.cookies.get("mytoken")
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
 
-        kategori_receive = request.form["kategori_give"]
+        course_receive = request.form["course_give"]
+        image_receive = request.files["image_give"]
 
-        existing_kategori = db.kategori.find_one({"kategori": kategori_receive})
-        if existing_kategori:
-            return jsonify({"result": "error", "message": "Kategori sudah ada."})
+        today = datetime.now()
+        mytime = today.strftime("%Y-%m-%d-%H-%M-%S")
 
-        db.kategori.insert_one({
-            "kategori": kategori_receive 
+        if image_receive:
+            extension = image_receive.filename.split('.')[-1]
+            filename = f'static/post-{mytime}.{extension}'
+            image_receive.save(filename)
+
+
+        existing_course = db.course.find_one({"course": course_receive})
+        if existing_course:
+            return jsonify({"result": "error", "message": "Course sudah ada."})
+
+        db.course.insert_one({
+            "course": course_receive,
+            'image': filename if image_receive else None
         })
 
         return jsonify({"result": "success"})
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for("discover"))
     
-@app.route('/edit_kategori/<string:kategori_id>', methods=['PUT'])
-def edit_kategori(kategori_id):
+@app.route('/edit_course/<string:course_id>', methods=['PUT'])
+def edit_course(course_id):
     try:
-        kategori_edit = request.form.get('kategori_edit')
+        course_edit = request.form.get('course_edit')
 
-        result = db.kategori.update_one({'_id': ObjectId(kategori_id)}, {'$set': {'kategori': kategori_edit}})
+        result = db.course.update_one({'_id': ObjectId(course_id)}, {'$set': {'course': course_edit}})
         
         if result.modified_count > 0:
-            response = {'result': 'success', 'message': 'Kategori edited successfully.'}
+            response = {'result': 'success', 'message': 'Course edited successfully.'}
         else:
-            response = {'result': 'error', 'message': 'Kategori not found or no changes made.'}
+            response = {'result': 'error', 'message': 'Course not found or no changes made.'}
     except Exception as e:
         response = {'result': 'error', 'message': str(e)}
 
     return jsonify(response)
 
     
-@app.route('/delete_kategori/<string:kategori_id>', methods=['DELETE'])
-def delete_kategori(kategori_id):
+@app.route('/delete_course/<string:course_id>', methods=['DELETE'])
+def delete_course(course_id):
     try:
-        result = db.kategori.delete_one({'_id': ObjectId(kategori_id)})
+        result = db.course.delete_one({'_id': ObjectId(course_id)})
         if result.deleted_count > 0:
-            response = {'result': 'success', 'message': 'Kategori deleted successfully.'}
+            response = {'result': 'success', 'message': 'course deleted successfully.'}
         else:
-            response = {'result': 'error', 'message': 'Kategori not found.'}
+            response = {'result': 'error', 'message': 'Course not found.'}
     except Exception as e:
         response = {'result': 'error', 'message': str(e)}
 
     return jsonify(response)
+
+@app.route('/listcourse', methods = ['GET'])
+def listcourse():
+    token_receive = request.cookies.get("mytoken")
+    try:
+        payload = jwt.decode(
+            token_receive, 
+            SECRET_KEY, 
+            algorithms=["HS256"])
+        user_info = db.user.find_one({"id": payload["id"]})
+        is_admin = user_info.get("role") == "admin"
+        logged_in = True
+        
+        return render_template("listcourse.html", user_info=user_info, is_admin = is_admin, logged_in = logged_in)
+    
+    except jwt.ExpiredSignatureError:
+        return render_template("listcourse.html", msg="Your token has expired")
+    except jwt.exceptions.DecodeError:
+        return render_template("listcourse.html", msg="There was problem logging you in")
+    
+@app.route('/detailcourse', methods = ['GET'])
+def detailcourse():
+    token_receive = request.cookies.get("mytoken")
+    try:
+        payload = jwt.decode(
+            token_receive, 
+            SECRET_KEY, 
+            algorithms=["HS256"])
+        user_info = db.user.find_one({"id": payload["id"]})
+        is_admin = user_info.get("role") == "admin"
+        logged_in = True
+        
+        return render_template("detailcourse.html", user_info=user_info, is_admin = is_admin, logged_in = logged_in)
+    
+    except jwt.ExpiredSignatureError:
+        return render_template("detailcourse.html", msg="Your token has expired")
+    except jwt.exceptions.DecodeError:
+        return render_template("detailcourse.html", msg="There was problem logging you in")
 
 @app.route('/mycourse', methods = ['GET'])
 def mycourse():
@@ -182,44 +234,6 @@ def cekpembayaran():
         return render_template("cekpembayaran.html", msg="Your token has expired")
     except jwt.exceptions.DecodeError:
         return render_template("cekpembayaran.html", msg="There was problem logging you in")
-    
-@app.route('/listcourse', methods = ['GET'])
-def listcourse():
-    token_receive = request.cookies.get("mytoken")
-    try:
-        payload = jwt.decode(
-            token_receive, 
-            SECRET_KEY, 
-            algorithms=["HS256"])
-        user_info = db.user.find_one({"id": payload["id"]})
-        is_admin = user_info.get("role") == "admin"
-        logged_in = True
-        
-        return render_template("listcourse.html", user_info=user_info, is_admin = is_admin, logged_in = logged_in)
-    
-    except jwt.ExpiredSignatureError:
-        return render_template("listcourse.html", msg="Your token has expired")
-    except jwt.exceptions.DecodeError:
-        return render_template("listcourse.html", msg="There was problem logging you in")
-    
-@app.route('/detailcourse', methods = ['GET'])
-def detailcourse():
-    token_receive = request.cookies.get("mytoken")
-    try:
-        payload = jwt.decode(
-            token_receive, 
-            SECRET_KEY, 
-            algorithms=["HS256"])
-        user_info = db.user.find_one({"id": payload["id"]})
-        is_admin = user_info.get("role") == "admin"
-        logged_in = True
-        
-        return render_template("detailcourse.html", user_info=user_info, is_admin = is_admin, logged_in = logged_in)
-    
-    except jwt.ExpiredSignatureError:
-        return render_template("detailcourse.html", msg="Your token has expired")
-    except jwt.exceptions.DecodeError:
-        return render_template("detailcourse.html", msg="There was problem logging you in")
 
 @app.route("/api/register", methods=["POST"])
 def api_register():
