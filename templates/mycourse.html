@@ -243,7 +243,7 @@
                 {% endif %}
                 {% if logged_in %}
                 <div class="d-lg-flex col-lg-3 justify-content-lg-end">
-                    <p>{{user_info.id}}</p>
+                    <button class="btn btn-outline-primary" id="logout" >{{user_info.id}}</button>
                     <button class="btn btn-primary" id="logout" onclick="logout()">Logout</button>
                 </div>
                 {% endif %}

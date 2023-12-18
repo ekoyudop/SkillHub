@@ -15,6 +15,12 @@
             margin: 10px;
         }
 
+        #login,
+        #register,
+        #logout {
+            margin-right: 20px;
+        }
+
         #image-container {
             text-align: center;
             margin-top: 20px;
@@ -129,6 +135,7 @@
                 {% endif %}
                 {% if logged_in %}
                 <div class="d-lg-flex col-lg-3 justify-content-lg-end">
+                    <button class="btn btn-outline-primary" id="logout" >{{user_info.id}}</button>
                     <button class="btn btn-primary" id="logout" onclick="logout()">Logout</button>
                 </div>
                 {% endif %}
