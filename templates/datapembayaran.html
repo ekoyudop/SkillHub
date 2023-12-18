@@ -108,21 +108,18 @@
             window.location.href = '/login'
         }
 
-        function pembayaran() {
-            var formData = new FormData();
-            formData.append('image_give', $('#imagesubmit')[0].files[0]);
-            formData.append('id_give', "{{user_info.id}}");
-            formData.append('status_give', "pending");
-
+        function accept_pembayaran(pembayaran_id) {
             $.ajax({
-                type: "POST",
-                url: "/pembayaran",
-                data: formData,
-                processData: false, // important
-                contentType: false, // important
+                type: "PUT",
+                url: "/accept_pembayaran/" + pembayaran_id,
+                data: {
+                    id_give: "{{pembayaran_list.user}}",
+                    role_give: "member",
+                    status_give: "success"
+                },
                 success: function (response) {
                     if (response["result"] === "success") {
-                        alert("Berhasil mengirim bukti pembayaran");
+                        alert("Berhasil menyetujui pembayaran");
                         window.location.reload();
                     } else {
                         alert("Error: " + response["message"]);
@@ -195,14 +192,19 @@
             {% for pembayaran in pembayaran_list %}
             <div class="row" id="card">
                 <div class="d-flex">
-                    <h5>Pembayaran Akses Course (Lifetime)<span class="badge rounded-pill text-bg-warning"
-                            id="badge">Pending</span></h5>
+                    <h5>Pembayaran Akses Course (Lifetime)
+                        {% if pembayaran.status == "pending" %} <span class="badge rounded-pill text-bg-warning"
+                            id="badge">Pending</span>
+                        {% endif %}
+                        {% if pembayaran.status == "success" %} <span class="badge rounded-pill text-bg-success" id="badge">Success</span>
+                        {%endif %}
+                    </h5>
                 </div>
                 <p>User : {{pembayaran.user}}</p>
                 <img src="/{{pembayaran.image}}" alt="Bukti Pembayaran" id="bukti-pembayaran"
-                    class="rounded mx-auto d-block">
+                    class="rounded mx-auto d-block" style="max-width: 500px;">
                 <div class="d-flex justify-content-end">
-                    <button type="button" class="btn btn-primary" id="submit">Acept</button>
+                    <button type="button" class="btn btn-primary" id="submit" onclick="accept_pembayaran('{{pembayaran._id}}')">Accept</button>
                     <button type="button" class="btn btn-primary" id="submit">Deny</button>
                 </div>
             </div>

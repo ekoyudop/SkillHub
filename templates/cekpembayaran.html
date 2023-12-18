@@ -172,7 +172,7 @@
                 {% endif %}
                 {% if logged_in %}
                 <div class="d-lg-flex col-lg-3 justify-content-lg-end">
-                    <p>{{user_info.role}}</p>
+                    <p>{{user_info.id}}</p>
                     <button class="btn btn-primary" id="logout" onclick="logout()">Logout</button>
                 </div>
                 {% endif %}
@@ -209,12 +209,12 @@
                 <div class="d-flex">
                     <h5>Akses Course (Lifetime)
                         {% if not is_member %} <span class="badge rounded-pill text-bg-warning"
-                            id="badge">Pending</span></h5>{% endif %}
-                    {% if is_member %} <span class="badge rounded-pill text-bg-success" id="badge">Success</span></h5>{%
-                    endif %}
+                            id="badge">Pending</span>{% endif %}
+                        {% if is_member %} <span class="badge rounded-pill text-bg-success" id="badge">Success</span>{%
+                        endif %}
                     </h5>
                 </div>
-                {% if not is_member %} 
+                {% if not is_member %}
                 <p id="pembayaran">Total Pembayaran : Rp. 100.000</p>
                 <div class="d-flex justify-content-end">
                     <label for="formFile" class="form-label"></label>
@@ -222,8 +222,9 @@
                     <button type="button" class="btn btn-primary" id="submit" onclick="pembayaran()">Submit</button>
                 </div>
                 {% endif %}
-                {% if is_member %} 
-                <p> Selamat pembayaran anda telah disetujui, anda sekarang dapat mengakses seluruh course yang ada di SkillHub</p>
+                {% if is_member %}
+                <p> Selamat pembayaran anda telah disetujui, anda sekarang dapat mengakses seluruh course yang ada di
+                    SkillHub</p>
                 {% endif %}
             </div>
             {% endif %}

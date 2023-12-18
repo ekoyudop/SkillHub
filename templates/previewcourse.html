@@ -58,6 +58,7 @@
         #judul_course {
             margin-left: 10px;
         }
+
         /* Footer Start */
         body {
             display: flex;
@@ -150,10 +151,18 @@
                         5. {{course_list.judul5}}
                     </p>
 
-                    <h3 class="text-center">Hanya Rp. 100.000 anda bisa mendapatkan akses <br>ke seluruh course yang ada di SkillHub!</h3>
+                    {% if not is_member %}
+                    <h3 class="text-center">Hanya Rp. 100.000 anda bisa mendapatkan akses <br>ke seluruh course yang ada
+                        di SkillHub!</h3>
                     <div class="center-button">
-                        <button type="button" class="btn btn-primary">Bayar Sekarang!</button>
+                        <a href="/cekpembayaran/{{user_info.id}}" class="btn btn-primary" id="lihat">Bayar Sekarang</a>
                     </div>
+                    {% endif %}
+                    {% if is_member %}
+                    <div class="center-button">
+                        <a href="/mycourse" class="btn btn-primary" id="lihat">Cek My Course</a>
+                    </div>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -213,4 +222,5 @@
 </footer>
 
 <!-- Footer End -->
+
 </html>

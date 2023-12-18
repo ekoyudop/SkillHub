@@ -114,6 +114,7 @@ def previewcourse(course_id):
             SECRET_KEY, 
             algorithms=["HS256"])
         user_info = db.user.find_one({"id": payload["id"]})
+        is_member = user_info.get("role") == "member"
         is_admin = user_info.get("role") == "admin"
         logged_in = True
         
@@ -121,6 +122,7 @@ def previewcourse(course_id):
 
         return render_template("previewcourse.html", 
                                user_info=user_info, 
+                               is_member = is_member,
                                is_admin = is_admin, 
                                logged_in = logged_in,
                                course_list=course_list)
@@ -137,7 +139,7 @@ def mycourse():
         if token_receive:
             payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
             user_info = db.user.find_one({"id": payload["id"]})
-            is_member = user_info.get("member") == "member"
+            is_member = user_info.get("role") == "member"
             is_admin = user_info.get("role") == "admin"
             role = user_info.get("role")
             logged_in = True
@@ -170,7 +172,7 @@ def detailcourse(course_id):
         if token_receive:
             payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
             user_info = db.user.find_one({"id": payload["id"]})
-            is_member = user_info.get("member") == "member"
+            is_member = user_info.get("role") == "member"
             is_admin = user_info.get("role") == "admin"
             role = user_info.get("role")
             logged_in = True
@@ -250,6 +252,32 @@ def datapembayaran():
     except jwt.exceptions.DecodeError:
         return render_template("datapembayaran.html", msg="There was problem logging you in")
     
+@app.route("/accept_pembayaran/<string:pembayaran_id>", methods=["PUT"])
+def accept_pembayaran(pembayaran_id):
+    token_receive = request.cookies.get("mytoken")
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
+
+        id_receive = request.form["id_give"]
+        role_receive = request.form["role_give"]
+        status_receive = request.form["status_give"]
+
+        print("id_receive:", id_receive)
+
+        db.pembayaran.update_one(
+            {"_id": ObjectId(pembayaran_id)},
+            {"$set": {"status": status_receive}}
+        )
+
+        # db.user.update_one(
+        #     {"user": id_receive},
+        #     {"$set": {"role": role_receive}}
+        # )
+
+        return jsonify({"result": "success"})
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return redirect(url_for("index"))
+
 @app.route("/pembayaran", methods=["POST"])
 def pembayaran():
     from datetime import datetime
@@ -277,7 +305,7 @@ def pembayaran():
 
         return jsonify({"result": "success"})
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
-        return redirect(url_for("pembayaran/<id>"))
+        return redirect(url_for("index"))
     
 @app.route("/add_course", methods=["POST"])
 def add_course():
