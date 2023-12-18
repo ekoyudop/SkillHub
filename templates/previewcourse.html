@@ -77,7 +77,7 @@
     </style>
     <script>
         function logout() {
-            $.removeCookie('mytoken');
+            $.removeCookie('mytoken', { path: "/" });
             alert('You have been logged out!')
             window.location.href = '/login'
         }

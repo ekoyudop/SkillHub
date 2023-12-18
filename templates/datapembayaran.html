@@ -157,12 +157,21 @@
                     <li class="nav-item">
                         <a class="nav-link" href="/discover">Discover</a>
                     </li>
+                    {% if logged_in %}
                     <li class="nav-item">
                         <a class="nav-link" href="/mycourse">My Course</a>
                     </li>
+                    {% if not is_admin %}
                     <li class="nav-item">
-                        <a class="nav-link active" href="/cekpembayaran/{{user_info.id}}">Cek Pembayaran</a>
+                        <a class="nav-link" href="/cekpembayaran/{{user_info.id}}">Cek Pembayaran</a>
                     </li>
+                    {% endif %}
+                    {% if is_admin %}
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/datapembayaran">Data Pembayaran</a>
+                    </li>
+                    {% endif %}
+                    {% endif %}
                 </ul>
                 {% if not logged_in %}
                 <div class="d-lg-flex col-lg-3 justify-content-lg-end">

@@ -29,6 +29,8 @@
             margin-left: 20px;
         }
 
+        #login,
+        #register,
         #logout {
             margin-right: 20px;
         }
@@ -55,7 +57,7 @@
             margin-top: 30px;
         }
 
-        #kategori {
+        #course-list {
             padding: 20px;
         }
 
@@ -67,20 +69,22 @@
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 1px 10px rgba(0, 0, 0, 0.1);
-            margin-top: 10px;
             margin-left: 25px;
+            margin-right: 10px;
+            margin-top: 10px;
         }
 
-        .container {
-            margin-top: 25px;
+        .img-fluid {
+            height: 120px;
+            width: 100%;
         }
 
-        #pembayaran {
-            margin-top: 20px;
+        #tambah {
+            margin-left: 15px;
         }
 
-        #submit {
-            margin-left: 10px;
+        #button {
+            margin-left: 5px;
         }
 
         /* Footer Start */
@@ -106,6 +110,88 @@
             alert('You have been logged out!')
             window.location.href = '/login'
         }
+
+        function add_course() {
+            var formData = new FormData();
+            formData.append('course_give', $("#course").val());
+            formData.append('deskripsi_give', $("#deskripsi").val());
+            formData.append('judul1_give', $("#judul1").val());
+            formData.append('materi1_give', $("#materi1").val());
+            formData.append('judul2_give', $("#judul2").val());
+            formData.append('materi2_give', $("#materi2").val());
+            formData.append('judul3_give', $("#judul3").val());
+            formData.append('materi3_give', $("#materi3").val());
+            formData.append('judul4_give', $("#judul4").val());
+            formData.append('materi4_give', $("#materi4").val());
+            formData.append('judul5_give', $("#judul5").val());
+            formData.append('materi5_give', $("#materi5").val());
+            formData.append('image_give', $('#image')[0].files[0]);
+
+            $.ajax({
+                type: "POST",
+                url: "/add_course",
+                data: formData,
+                processData: false, // important
+                contentType: false, // important
+                success: function (response) {
+                    if (response["result"] === "success") {
+                        alert("Berhasil menambahkan course");
+                        window.location.reload();
+                    } else {
+                        alert("Error: " + response["message"]);
+                    }
+                },
+            });
+        }
+
+        function edit_course(course_id) {
+            var formData = new FormData();
+            formData.append('course_edit', $("#course_edit").val());
+            formData.append('deskripsi_edit', $("#deskripsi_edit").val());
+            formData.append('judul1_edit', $("#judul1_edit").val());
+            formData.append('materi1_edit', $("#materi1_edit").val());
+            formData.append('judul2_edit', $("#judul2_edit").val());
+            formData.append('materi2_edit', $("#materi2_edit").val());
+            formData.append('judul3_edit', $("#judul3_edit").val());
+            formData.append('materi3_edit', $("#materi3_edit").val());
+            formData.append('judul4_edit', $("#judul4_edit").val());
+            formData.append('materi4_edit', $("#materi4_edit").val());
+            formData.append('judul5_edit', $("#judul5_edit").val());
+            formData.append('materi5_edit', $("#materi5_edit").val());
+            formData.append('image_edit', $('#image_edit')[0].files[0]);
+
+            $.ajax({
+                type: "PUT",
+                url: "/edit_course/" + course_id,
+                data: formData,
+                processData: false, // important
+                contentType: false, // important
+                success: function (response) {
+                    if (response["result"] === "success") {
+                        alert("Berhasil mengedit course");
+                        window.location.reload();
+                    } else {
+                        alert("Error: " + response["message"]);
+                    }
+                },
+            });
+        }
+
+        function delete_course(course_id) {
+            $.ajax({
+                type: "DELETE",
+                url: "/delete_course/" + course_id,
+                success: function (response) {
+                    if (response["result"] === "success") {
+                        alert("Berhasil menghapus course");
+                        window.location.reload();
+                    } else {
+                        alert("Error: " + response["message"]);
+                    }
+                },
+            });
+        }
+
     </script>
 </head>
 
@@ -123,7 +209,7 @@
             </button>
 
             <div class="collapse navbar-collapse d-lg-flex" id="navbar">
-                <a class="navbar-brand col-lg-3 me-0" href="/home_pemilik">
+                <a class="navbar-brand col-lg-3 me-0" href="/">
                     <img src="/static/logo.png" alt="" style="max-width: 30%; height: auto;" id="logo">
                 </a>
                 <ul class="navbar-nav col-lg-6 justify-content-lg-center">
@@ -133,12 +219,21 @@
                     <li class="nav-item">
                         <a class="nav-link" href="/discover">Discover</a>
                     </li>
+                    {% if logged_in %}
                     <li class="nav-item">
                         <a class="nav-link active" href="/mycourse">My Course</a>
                     </li>
+                    {% if not is_admin %}
                     <li class="nav-item">
                         <a class="nav-link" href="/cekpembayaran/{{user_info.id}}">Cek Pembayaran</a>
                     </li>
+                    {% endif %}
+                    {% if is_admin %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/datapembayaran">Data Pembayaran</a>
+                    </li>
+                    {% endif %}
+                    {% endif %}
                 </ul>
                 {% if not logged_in %}
                 <div class="d-lg-flex col-lg-3 justify-content-lg-end">
@@ -148,6 +243,7 @@
                 {% endif %}
                 {% if logged_in %}
                 <div class="d-lg-flex col-lg-3 justify-content-lg-end">
+                    <p>{{user_info.id}}</p>
                     <button class="btn btn-primary" id="logout" onclick="logout()">Logout</button>
                 </div>
                 {% endif %}
@@ -158,30 +254,26 @@
 
     <div class="container">
         <div class="row">
-            <div class="col-lg-3" id="card">
-                <div class="d-flex">
-                    <h5>HTML Course</h5>
-                </div>
-                <p>Progress 1/10</p>
-                <div class="d-flex justify-content-end">
-                    {% if is_admin %}
-                    <button type="button" class="btn btn-primary" id="submit">Edit</button>
-                    <button type="button" class="btn btn-primary" id="submit">Delete</button>
-                    {% endif %}
-                    <button type="button" class="btn btn-primary" id="submit">View</button>
-                </div>
-            </div>
-            <div class="col-lg-3" id="card">
-                <div class="d-flex">
-                    <h5>CSS Course</h5>
-                </div>
-                <p>Progress 1/10</p>
-                <div class="d-flex justify-content-end">
-                    {% if is_admin %}
-                    <button type="button" class="btn btn-primary" id="submit">Edit</button>
-                    <button type="button" class="btn btn-primary" id="submit">Delete</button>
-                    {% endif %}
-                    <button type="button" class="btn btn-primary" id="submit">View</button>
+            <div class="col" id="course-list">
+                <div class="row row-cols-lg-5 row-cols-2 row-cols-md-3">
+                    {% for course in course_list %}
+                    <div class="col" id="card">
+                        <div class="text-center position-relative">
+                            <a href="#!"><img src="{{course.image}}" alt="Grocery Ecommerce Template"
+                                    class="mb-3 img-fluid"></a>
+                        </div>
+                        <h5>{{ course.course }}</h5>
+                        <div class="d-flex justify-content-lg-end">
+                            {% if is_admin %}
+                            <button type="button" class="btn btn-primary" id="button"
+                                onclick="delete_course('{{ course._id }}')">Delete</button>
+                            {% endif %}
+                            <a href="/mycourse/detailcourse/{{course._id}}">
+                                <button type="button" class="btn btn-primary" id="button">Detail</button>
+                            </a>
+                        </div>
+                    </div>
+                    {% endfor %}
                 </div>
             </div>
         </div>

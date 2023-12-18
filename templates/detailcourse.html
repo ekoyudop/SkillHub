@@ -54,6 +54,10 @@
             margin-left: 10px;
             margin-bottom: 10px;
         }
+
+        #judul_course {
+            margin-left: 10px;
+        }
         /* Footer Start */
         body {
             display: flex;
@@ -73,7 +77,7 @@
     </style>
     <script>
         function logout() {
-            $.removeCookie('mytoken');
+            $.removeCookie('mytoken', { path: "/" });
             alert('You have been logged out!')
             window.location.href = '/login'
         }
@@ -128,64 +132,34 @@
     <div class="container">
         <div class="row">
             <div class="col" id="kategori">
-                <div class="d-flex flex-row mb-3">
-                    <div class="p-2">
-                        <a href="/discover_pemilik" class="text-decoration-none custom-text-color">
-                            <h3>Daftar Kategori</h3>
-
-                        </a>
-                    </div>
-                    <div class="p-2">
-                        <h3>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
-                                class="bi bi-arrow-right" viewBox="0 0 16 16">
-                                <path fill-rule="evenodd"
-                                    d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8" />
-                            </svg>
-                        </h3>
-                    </div>
-                    <div class="p-2">
-                        <a href="/listcourse_pemilik" class="text-decoration-none custom-text-color">
-                            <h3>Web Development</h3>
-                        </a>
-                    </div>
-                    <div class="p-2">
-                        <h3>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
-                                class="bi bi-arrow-right" viewBox="0 0 16 16">
-                                <path fill-rule="evenodd"
-                                    d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8" />
-                            </svg>
-                        </h3>
-                    </div>
-                    <div class="p-2">
-                        <a href="/detailcourse_pemilik" class="text-decoration-none custom-text-color">
-                            <h3>HTML</h3>
-                        </a>
-                    </div>
+                <div class="d-flex flex-row mb-3" id="judul_course">
+                    <h3>{{course_list.course}}</h3>
                 </div>
                 {% if is_admin %}
                 <button type="button" class="btn btn-primary" id="edit">Edit</button>
                 {% endif %}
                 <div class="container" id="course">
-                    <h2>HTML Introduction</h2>
-                    <p>Hypertext Markup Language adalah bahasa markah standar untuk dokumen yang dirancang untuk
-                        ditampilkan di
-                        peramban internet. Ini dapat dibantu oleh teknologi seperti Cascading Style Sheets dan bahasa
-                        skrip
-                        lainnya seperti JavaScript, VBScript, dan PHP.</p>
+                    <h2>{{course_list.course}} Introduction</h2>
+                    <p>{{course_list.deskripsi}}</p>
 
-                    <h2>Materi</h2>
-                    <p>1. Basic HTML <br>
-                        2. HTML Forms <br>
-                        3. HTML Graphics <br>
-                        4. HTML Media <br>
-                        5. HTML APIs
-                    </p>
+                    <h2>{{course_list.judul1}}</h2>
+                    <p>{{course_list.materi1}}</p>
 
-                    <h3 class="text-center">Beli course sekarang untuk mendapatkan aksesnya!</h3>
+                    <h2>{{course_list.judul2}}</h2>
+                    <p>{{course_list.materi2}}</p>
+
+                    <h2>{{course_list.judul3}}</h2>
+                    <p>{{course_list.materi3}}</p>
+
+                    <h2>{{course_list.judul4}}</h2>
+                    <p>{{course_list.materi4}}</p>
+
+                    <h2>{{course_list.judul5}}</h2>
+                    <p>{{course_list.materi5}}</p>
+
+                    <h3 class="text-center">Hanya Rp. 100.000 anda bisa mendapatkan akses <br>ke seluruh course yang ada di SkillHub!</h3>
                     <div class="center-button">
-                        <button type="button" class="btn btn-primary">Beli Sekarang!</button>
+                        <button type="button" class="btn btn-primary">Bayar Sekarang!</button>
                     </div>
                 </div>
             </div>

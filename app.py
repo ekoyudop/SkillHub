@@ -105,7 +105,7 @@ def discover():
     except jwt.exceptions.DecodeError:
         return render_template("discover.html", msg="There was problem logging you in")
     
-@app.route('/previewcourse/<string:course_id>', methods = ['GET'])
+@app.route('/discover/previewcourse/<string:course_id>', methods = ['GET'])
 def previewcourse(course_id):
     token_receive = request.cookies.get("mytoken")
     try:
@@ -134,34 +134,62 @@ def previewcourse(course_id):
 def mycourse():
     token_receive = request.cookies.get("mytoken")
     try:
-        payload = jwt.decode(
-            token_receive, 
-            SECRET_KEY, 
-            algorithms=["HS256"])
-        user_info = db.user.find_one({"id": payload["id"]})
-        is_admin = user_info.get("role") == "admin"
-        logged_in = True
+        if token_receive:
+            payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
+            user_info = db.user.find_one({"id": payload["id"]})
+            is_member = user_info.get("member") == "member"
+            is_admin = user_info.get("role") == "admin"
+            role = user_info.get("role")
+            logged_in = True
+        else:
+            user_info = None
+            is_admin = False
+            logged_in = False
+
+        course_list = db.course.find()
+
+        if role not in ["admin", "member"]:
+            return redirect(url_for("cekpembayaran", id=payload["id"]))
         
-        return render_template("mycourse.html", user_info=user_info, is_admin = is_admin, logged_in = logged_in)
+        return render_template("mycourse.html", 
+                               user_info=user_info, 
+                               is_member = is_member,
+                               is_admin = is_admin, 
+                               logged_in = logged_in, 
+                               course_list = course_list)
     
     except jwt.ExpiredSignatureError:
         return render_template("mycourse.html", msg="Your token has expired")
     except jwt.exceptions.DecodeError:
         return render_template("mycourse.html", msg="There was problem logging you in")
-    
-@app.route('/detailcourse', methods = ['GET'])
-def detailcourse():
+
+@app.route('/mycourse/detailcourse/<string:course_id>', methods = ['GET'])
+def detailcourse(course_id):
     token_receive = request.cookies.get("mytoken")
     try:
-        payload = jwt.decode(
-            token_receive, 
-            SECRET_KEY, 
-            algorithms=["HS256"])
-        user_info = db.user.find_one({"id": payload["id"]})
-        is_admin = user_info.get("role") == "admin"
-        logged_in = True
-        
-        return render_template("detailcourse.html", user_info=user_info, is_admin = is_admin, logged_in = logged_in)
+        if token_receive:
+            payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
+            user_info = db.user.find_one({"id": payload["id"]})
+            is_member = user_info.get("member") == "member"
+            is_admin = user_info.get("role") == "admin"
+            role = user_info.get("role")
+            logged_in = True
+        else:
+            user_info = None
+            is_admin = False
+            logged_in = False
+
+        course_list = db.course.find_one({'_id': ObjectId(course_id)})
+
+        if role not in ["admin", "member"]:
+            return redirect(url_for("cekpembayaran", id=payload["id"]))
+
+        return render_template("detailcourse.html", 
+                               user_info=user_info, 
+                               is_admin = is_admin, 
+                               is_member = is_member,
+                               logged_in = logged_in,
+                               course_list = course_list)
     
     except jwt.ExpiredSignatureError:
         return render_template("detailcourse.html", msg="Your token has expired")
@@ -177,6 +205,7 @@ def cekpembayaran(id):
             SECRET_KEY, 
             algorithms=["HS256"])
         user_info = db.user.find_one({"id": payload["id"]})
+        is_member = user_info.get("role") == "member"
         is_admin = user_info.get("role") == "admin"
         logged_in = True
 
@@ -185,6 +214,7 @@ def cekpembayaran(id):
         return render_template("cekpembayaran.html", 
                                user_info=user_info, 
                                is_admin = is_admin, 
+                               is_member = is_member,
                                logged_in = logged_in,
                                pembayaran_info=pembayaran_info)
     

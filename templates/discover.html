@@ -223,6 +223,7 @@
                     <li class="nav-item">
                         <a class="nav-link" href="/mycourse">My Course</a>
                     </li>
+                    {% if not is_admin %}
                     <li class="nav-item">
                         <a class="nav-link" href="/cekpembayaran/{{user_info.id}}">Cek Pembayaran</a>
                     </li>
@@ -231,6 +232,7 @@
                     <li class="nav-item">
                         <a class="nav-link" href="/datapembayaran">Data Pembayaran</a>
                     </li>
+                    {% endif %}
                     {% endif %}
                 </ul>
                 {% if not logged_in %}
@@ -352,7 +354,7 @@
                             <button type="button" class="btn btn-primary" id="button"
                                 onclick="delete_course('{{ course._id }}')">Delete</button>
                             {% endif %}
-                            <a href="/previewcourse/{{course._id}}">
+                            <a href="/discover/previewcourse/{{course._id}}">
                                 <button type="button" class="btn btn-primary" id="button">Detail</button>
                             </a>
                         </div>
