@@ -154,7 +154,7 @@
                 {% endif %}
                 {% if logged_in %}
                 <div class="d-lg-flex col-lg-3 justify-content-lg-end">
-                    <button class="btn btn-outline-primary" id="logout" >{{user_info.id}}</button>
+                    <button class="btn btn-outline-primary" id="logout">{{user_info.id}}</button>
                     <button class="btn btn-primary" id="logout" onclick="logout()">Logout</button>
                 </div>
                 {% endif %}
@@ -210,29 +210,63 @@
 
     <!-- FAQ Start -->
     <div id="faq">
-        <div class="container" id="faq-container">
-            <br>
-            <h3>Informasi Tambahan</h3>
-            <br>
-            <div class="faq-item">
-                <h5>Apa itu SkillHub?</h5>
-                <p>SkillHub adalah platform pembelajaran online di mana Anda dapat menemukan dan mengambil berbagai
-                    kursus untuk meningkatkan
-                    keterampilan Anda.</p>
-            </div>
+        <div class="container px-4 py-5">
+            <div class="row row-cols-1 row-cols-md-2 align-items-md-center">
+                <div class="col d-flex flex-column align-items-start gap-2">
+                    <h2 class="fw-bold text-body-emphasis">Informasi Tambahan</h2>
+                    <p class="text-body-secondary">SkillHub adalah platform pembelajaran online di mana Anda dapat
+                        menemukan dan mengambil berbagai kursus untuk meningkatkan keterampilan Anda.
+                </div>
 
-            <div class="faq-item">
-                <h5>Bagaimana cara mendaftar dalam sebuah kursus?</h5>
-                <p>Untuk mendaftar dalam sebuah kursus, cukup navigasi ke halaman "Course" dan klik tombol "Beli
-                    Sekarang".</p>
-            </div>
+                <div class="col">
+                    <div class="row row-cols-1 row-cols-sm-2 g-4">
+                        <div class="col d-flex flex-column gap-2">
+                            <div
+                                class="feature-icon-small d-inline-flex align-items-center justify-content-center text-bg-primary bg-gradient fs-4 rounded-3">
+                                <svg class="bi" width="1em" height="1em">
+                                    <use xlink:href="#collection"></use>
+                                </svg>
+                            </div>
+                            <h4 class="fw-semibold mb-0 text-body-emphasis">Harga Terjangkau</h4>
+                            <p class="text-body-secondary">Hanya Rp. 100.000</p>
+                        </div>
 
-            <div class="faq-item">
-                <h5>Apakah saya dapat mengakses kursus saya di beberapa perangkat?</h5>
-                <p>Iya, Anda dapat mengakses kursus Anda di beberapa perangkat dengan login menggunakan kredensial akun
-                    Anda.</p>
+                        <div class="col d-flex flex-column gap-2">
+                            <div
+                                class="feature-icon-small d-inline-flex align-items-center justify-content-center text-bg-primary bg-gradient fs-4 rounded-3">
+                                <svg class="bi" width="1em" height="1em">
+                                    <use xlink:href="#gear-fill"></use>
+                                </svg>
+                            </div>
+                            <h4 class="fw-semibold mb-0 text-body-emphasis">Pendaftaran Akun Mudah</h4>
+                            <p class="text-body-secondary">Pergi ke halaman register dan isi data diri anda</p>
+                        </div>
+
+                        <div class="col d-flex flex-column gap-2">
+                            <div
+                                class="feature-icon-small d-inline-flex align-items-center justify-content-center text-bg-primary bg-gradient fs-4 rounded-3">
+                                <svg class="bi" width="1em" height="1em">
+                                    <use xlink:href="#speedometer"></use>
+                                </svg>
+                            </div>
+                            <h4 class="fw-semibold mb-0 text-body-emphasis">Full Akses</h4>
+                            <p class="text-body-secondary">Dapatkan full akses ke semua course yang ada di SKillHub
+                                dengan menjadi member di SkillHub</p>
+                        </div>
+
+                        <div class="col d-flex flex-column gap-2">
+                            <div
+                                class="feature-icon-small d-inline-flex align-items-center justify-content-center text-bg-primary bg-gradient fs-4 rounded-3">
+                                <svg class="bi" width="1em" height="1em">
+                                    <use xlink:href="#table"></use>
+                                </svg>
+                            </div>
+                            <h4 class="fw-semibold mb-0 text-body-emphasis">Akses Selamanya</h4>
+                            <p class="text-body-secondary">Cukup bayar sekali dan nikmati akses ke course selamanya</p>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <br>
         </div>
     </div>
     <!-- FAQ End -->
