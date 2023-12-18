@@ -245,7 +245,7 @@ def datapembayaran():
                                user_info=user_info, 
                                is_admin = is_admin,
                                logged_in = logged_in,
-                               pembayaran_list=pembayaran_list)
+                               pembayaran_list = pembayaran_list)
     
     except jwt.ExpiredSignatureError:
         return render_template("datapembayaran.html", msg="Your token has expired")
@@ -258,21 +258,22 @@ def accept_pembayaran(pembayaran_id):
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
 
-        id_receive = request.form["id_give"]
         role_receive = request.form["role_give"]
         status_receive = request.form["status_give"]
+        user_receive = request.form["user_give"] 
 
-        print("id_receive:", id_receive)
+
+        print("user_receive:", user_receive)
 
         db.pembayaran.update_one(
             {"_id": ObjectId(pembayaran_id)},
             {"$set": {"status": status_receive}}
         )
 
-        # db.user.update_one(
-        #     {"user": id_receive},
-        #     {"$set": {"role": role_receive}}
-        # )
+        db.user.update_one(
+            {"id": user_receive},
+            {"$set": {"role": role_receive}}
+        )
 
         return jsonify({"result": "success"})
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):

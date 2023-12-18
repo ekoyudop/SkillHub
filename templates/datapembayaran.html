@@ -108,14 +108,14 @@
             window.location.href = '/login'
         }
 
-        function accept_pembayaran(pembayaran_id) {
+        function accept_pembayaran(pembayaran_id, user) {
             $.ajax({
                 type: "PUT",
                 url: "/accept_pembayaran/" + pembayaran_id,
                 data: {
-                    id_give: "{{pembayaran_list.user}}",
                     role_give: "member",
-                    status_give: "success"
+                    status_give: "success",
+                    user_give: user
                 },
                 success: function (response) {
                     if (response["result"] === "success") {
@@ -127,6 +127,7 @@
                 },
             });
         }
+
     </script>
 </head>
 
@@ -178,7 +179,7 @@
                 {% endif %}
                 {% if logged_in %}
                 <div class="d-lg-flex col-lg-3 justify-content-lg-end">
-                    <p>{{user_info.role}}</p>
+                    <p>{{user_info.id}}</p>
                     <button class="btn btn-primary" id="logout" onclick="logout()">Logout</button>
                 </div>
                 {% endif %}
@@ -196,7 +197,8 @@
                         {% if pembayaran.status == "pending" %} <span class="badge rounded-pill text-bg-warning"
                             id="badge">Pending</span>
                         {% endif %}
-                        {% if pembayaran.status == "success" %} <span class="badge rounded-pill text-bg-success" id="badge">Success</span>
+                        {% if pembayaran.status == "success" %} <span class="badge rounded-pill text-bg-success"
+                            id="badge">Success</span>
                         {%endif %}
                     </h5>
                 </div>
@@ -204,7 +206,8 @@
                 <img src="/{{pembayaran.image}}" alt="Bukti Pembayaran" id="bukti-pembayaran"
                     class="rounded mx-auto d-block" style="max-width: 500px;">
                 <div class="d-flex justify-content-end">
-                    <button type="button" class="btn btn-primary" id="submit" onclick="accept_pembayaran('{{pembayaran._id}}')">Accept</button>
+                    <button type="button" class="btn btn-primary" id="submit"
+                        onclick="accept_pembayaran('{{pembayaran._id}}', '{{pembayaran.user}}')">Accept</button>
                     <button type="button" class="btn btn-primary" id="submit">Deny</button>
                 </div>
             </div>
