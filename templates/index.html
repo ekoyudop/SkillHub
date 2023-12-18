@@ -38,6 +38,10 @@
         /* Navbar End */
 
         /* Content Start  */
+        body {
+            background-color: #eff8ff;
+        }
+
         #image-container {
             text-align: center;
             margin-top: 20px;
@@ -49,6 +53,7 @@
         }
 
         #card {
+            background-color: white;
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 1px 10px rgba(0, 0, 0, 0.1);
@@ -79,14 +84,10 @@
         /* FAQ End */
 
         /* Footer Start */
-        body {
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-
-        #footer {
+        #footer, #faq{
+            padding-top: 25px;
             margin-top: auto;
+            background-color: white;
         }
 
         .footer {
@@ -210,7 +211,7 @@
 
     <!-- FAQ Start -->
     <div id="faq">
-        <div class="container px-4 py-5">
+        <div class="container px-4 py-2">
             <div class="row row-cols-1 row-cols-md-2 align-items-md-center">
                 <div class="col d-flex flex-column align-items-start gap-2">
                     <h2 class="fw-bold text-body-emphasis">Informasi Tambahan</h2>
@@ -275,7 +276,6 @@
 
 <!-- Footer Start-->
 <footer id="footer">
-    <hr>
     <div class="container">
         <div class="row">
             <img src="/static/logo.png" alt="" style="max-width: 20%; height: auto;">
@@ -320,7 +320,6 @@
         </div>
     </div>
     <br>
-    <hr>
     <div class="footer">
         <p>&copy; 2023 SkillHub. All rights reserved.</p>
     </div>
