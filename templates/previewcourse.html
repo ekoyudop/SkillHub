@@ -15,6 +15,12 @@
             margin: 10px;
         }
 
+        #login,
+        #register,
+        #logout {
+            margin-right: 20px;
+        }
+
         #image-container {
             text-align: center;
             margin-top: 20px;
@@ -108,12 +114,23 @@
                     <li class="nav-item">
                         <a class="nav-link" href="/discover">Discover</a>
                     </li>
+                    {% if logged_in %}
+                    {% if is_member or is_admin %}
                     <li class="nav-item">
                         <a class="nav-link" href="/mycourse">My Course</a>
                     </li>
+                    {% endif %}
+                    {% if not is_admin %}
                     <li class="nav-item">
                         <a class="nav-link" href="/cekpembayaran/{{user_info.id}}">Cek Pembayaran</a>
                     </li>
+                    {% endif %}
+                    {% if is_admin %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/datapembayaran">Data Pembayaran</a>
+                    </li>
+                    {% endif %}
+                    {% endif %}
                 </ul>
                 {% if not logged_in %}
                 <div class="d-lg-flex col-lg-3 justify-content-lg-end">
@@ -150,17 +167,25 @@
                         4. {{course_list.judul4}} <br>
                         5. {{course_list.judul5}}
                     </p>
-
-                    {% if not is_member %}
+                    {% if logged_in %}
+                    {% if not is_member and not is_admin %}
                     <h3 class="text-center">Hanya Rp. 100.000 anda bisa mendapatkan akses <br>ke seluruh course yang ada
                         di SkillHub!</h3>
                     <div class="center-button">
                         <a href="/cekpembayaran/{{user_info.id}}" class="btn btn-primary" id="lihat">Bayar Sekarang</a>
                     </div>
                     {% endif %}
-                    {% if is_member %}
+                    {% if is_member or is_admin %}
                     <div class="center-button">
                         <a href="/mycourse" class="btn btn-primary" id="lihat">Cek My Course</a>
+                    </div>
+                    {% endif %}
+                    {% endif %}
+                    {% if not logged_in %}
+                    <h3 class="text-center">Hanya Rp. 100.000 anda bisa mendapatkan akses <br>ke seluruh course yang ada
+                        di SkillHub!</h3>
+                    <div class="center-button">
+                        <a href="/register" class="btn btn-primary" id="lihat">Daftar Sekarang</a>
                     </div>
                     {% endif %}
                 </div>

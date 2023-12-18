@@ -220,9 +220,11 @@
                         <a class="nav-link active" href="/discover">Discover</a>
                     </li>
                     {% if logged_in %}
+                    {% if is_member or is_admin %}
                     <li class="nav-item">
                         <a class="nav-link" href="/mycourse">My Course</a>
                     </li>
+                    {% endif %}
                     {% if not is_admin %}
                     <li class="nav-item">
                         <a class="nav-link" href="/cekpembayaran/{{user_info.id}}">Cek Pembayaran</a>

@@ -30,16 +30,18 @@ def index():
         if token_receive:
             payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
             user_info = db.user.find_one({"id": payload["id"]})
+            is_member = user_info.get("role") == "member"
             is_admin = user_info.get("role") == "admin"
             logged_in = True
         else:
             user_info = None
             is_admin = False
             logged_in = False
+            is_member = False
 
         course_list = db.course.find()
         
-        return render_template("index.html", user_info=user_info, is_admin = is_admin, logged_in = logged_in, course_list=course_list)
+        return render_template("index.html", user_info=user_info, is_member = is_member,is_admin = is_admin, logged_in = logged_in, course_list=course_list)
     
     except jwt.ExpiredSignatureError:
         return render_template("index.html", msg="Your token has expired")
@@ -85,17 +87,20 @@ def discover():
         if token_receive:
             payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
             user_info = db.user.find_one({"id": payload["id"]})
+            is_member = user_info.get("role") == "member"
             is_admin = user_info.get("role") == "admin"
             logged_in = True
         else:
             user_info = None
             is_admin = False
             logged_in = False
+            is_member = False
 
         course_list = db.course.find()
 
         return render_template("discover.html", 
                                user_info=user_info, 
+                               is_member = is_member,
                                is_admin = is_admin,
                                logged_in = logged_in,
                                course_list=course_list)
@@ -109,14 +114,17 @@ def discover():
 def previewcourse(course_id):
     token_receive = request.cookies.get("mytoken")
     try:
-        payload = jwt.decode(
-            token_receive, 
-            SECRET_KEY, 
-            algorithms=["HS256"])
-        user_info = db.user.find_one({"id": payload["id"]})
-        is_member = user_info.get("role") == "member"
-        is_admin = user_info.get("role") == "admin"
-        logged_in = True
+        if token_receive:
+            payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
+            user_info = db.user.find_one({"id": payload["id"]})
+            is_member = user_info.get("role") == "member"
+            is_admin = user_info.get("role") == "admin"
+            logged_in = True
+        else:
+            user_info = None
+            is_admin = False
+            logged_in = False
+            is_member = False
         
         course_list = db.course.find_one({'_id': ObjectId(course_id)})
 

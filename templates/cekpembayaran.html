@@ -157,9 +157,11 @@
                     <li class="nav-item">
                         <a class="nav-link" href="/discover">Discover</a>
                     </li>
+                    {% if is_member %}
                     <li class="nav-item">
                         <a class="nav-link" href="/mycourse">My Course</a>
                     </li>
+                    {% endif %}
                     <li class="nav-item">
                         <a class="nav-link active" href="/cekpembayaran/{{user_info.id}}">Cek Pembayaran</a>
                     </li>

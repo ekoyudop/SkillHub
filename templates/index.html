@@ -30,7 +30,8 @@
         }
 
         #login,
-        #register, #logout {
+        #register,
+        #logout {
             margin-right: 20px;
         }
 
@@ -128,9 +129,11 @@
                         <a class="nav-link" href="/discover">Discover</a>
                     </li>
                     {% if logged_in %}
+                    {% if is_member or is_admin%}
                     <li class="nav-item">
                         <a class="nav-link" href="/mycourse">My Course</a>
                     </li>
+                    {% endif %}
                     {% if not is_admin %}
                     <li class="nav-item">
                         <a class="nav-link" href="/cekpembayaran/{{user_info.id}}">Cek Pembayaran</a>
@@ -172,16 +175,18 @@
                 </div>
                 <div class="row row-cols-lg-5 row-cols-2 row-cols-md-3">
                     {% for course in course_list %}
-                        <div class="col" id="card">
-                            <div class="text-center position-relative">
-                                <a href="#!"><img src="{{course.image}}" alt="Grocery Ecommerce Template"
-                                        class="mb-3 img-fluid" style="height: 120px; width: 100%; "></a>
-                            </div>
-                            <h5>{{ course.course }}</h5>
-                            <div class="d-flex justify-content-lg-end">
-                                <button type="button" class="btn btn-primary" id="button">Detail</button>
-                            </div>
+                    <div class="col" id="card">
+                        <div class="text-center position-relative">
+                            <a href="#!"><img src="{{course.image}}" alt="Grocery Ecommerce Template"
+                                    class="mb-3 img-fluid" style="height: 120px; width: 100%; "></a>
                         </div>
+                        <h5>{{ course.course }}</h5>
+                        <div class="d-flex justify-content-lg-end">
+                            <a href="/discover/previewcourse/{{course._id}}">
+                                <button type="button" class="btn btn-primary" id="button">Detail</button>
+                            </a>
+                        </div>
+                    </div>
                     {% endfor %}
                 </div>
             </div>
