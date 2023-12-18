@@ -65,6 +65,7 @@
         #judul_course {
             margin-left: 10px;
         }
+
         /* Footer Start */
         body {
             background-color: #eff8ff;
@@ -139,7 +140,7 @@
                 {% endif %}
                 {% if logged_in %}
                 <div class="d-lg-flex col-lg-3 justify-content-lg-end">
-                    <button class="btn btn-outline-primary" id="logout" >{{user_info.id}}</button>
+                    <button class="btn btn-outline-primary" id="logout">{{user_info.id}}</button>
                     <button class="btn btn-primary" id="logout" onclick="logout()">Logout</button>
                 </div>
                 {% endif %}
@@ -156,7 +157,8 @@
                 <div class="container" id="course">
                     <h2>{{course_list.course}} Introduction</h2>
                     <p>{{course_list.deskripsi}}</p>
-
+                    <iframe width="100%" height="720" src="{{course_list.linkembed}}" frameborder="0"
+                        allowfullscreen></iframe>
                     <h2>{{course_list.judul1}}</h2>
                     <p>{{course_list.materi1}}</p>
 
@@ -228,4 +230,5 @@
 </footer>
 
 <!-- Footer End -->
+
 </html>

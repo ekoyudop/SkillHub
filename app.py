@@ -325,6 +325,7 @@ def add_course():
 
         course_receive = request.form["course_give"]
         deskripsi_receive = request.form["deskripsi_give"]
+        linkembed_receive = request.form["linkembed_give"]
         judul1_receive = request.form["judul1_give"]
         materi1_receive = request.form["materi1_give"]
         judul2_receive = request.form["judul2_give"]
@@ -353,6 +354,7 @@ def add_course():
         db.course.insert_one({
             "course": course_receive,
             "deskripsi": deskripsi_receive,
+            "linkembed": linkembed_receive,
             "judul1": judul1_receive,
             "materi1": materi1_receive,
             "judul2": judul2_receive,

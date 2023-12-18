@@ -119,6 +119,7 @@
             var formData = new FormData();
             formData.append('course_give', $("#course").val());
             formData.append('deskripsi_give', $("#deskripsi").val());
+            formData.append('linkembed_give', $("#linkembed").val());
             formData.append('judul1_give', $("#judul1").val());
             formData.append('materi1_give', $("#materi1").val());
             formData.append('judul2_give', $("#judul2").val());
@@ -293,6 +294,10 @@
                                 <div class="mb-3">
                                     <label for="" class="form-label">Deskripsi</label>
                                     <textarea class="form-control" id="deskripsi" rows="2"></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="" class="form-label">Link Embed</label>
+                                    <textarea class="form-control" id="linkembed" rows="2"></textarea>
                                 </div>
                                 <div class="mb-3">
                                     <label for="" class="form-label">Judul Materi 1</label>
